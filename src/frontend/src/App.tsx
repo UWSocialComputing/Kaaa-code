@@ -1,5 +1,6 @@
-import React, {Suspense, SuspenseResource, useState} from 'react';
-import spinner from './../util/spinner.gif';
+import React, {Suspense, useState} from 'react';
+import {SwishSpinner} from 'react-spinners-kit';
+import Navbar from './Navbar/Navbar.tsx'
 
 function App() {
   const [activeTab, setActiveTab] = useState<string>('homePage');
@@ -10,14 +11,11 @@ function App() {
 
   return (
     <div>
-      <Suspense fallback={<div>
-        <img
-          src={spinner}
-          style={{ width: '100px', margin: 'auto', display: 'block' }}
-          alt="Loading..."
-        />
-      </div>}>
-        // Tab logic here
+      <Navbar></Navbar>
+      <Suspense fallback={<div className="h-screen flex items-center justify-center"><SwishSpinner size={150} loading={true}/></div>}>
+        <div className="">
+          Tab logic here
+        </div>
       </Suspense>
     </div>
   );
