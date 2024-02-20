@@ -1,4 +1,5 @@
 import { GeistSans } from "geist/font/sans";
+import AuthButton from "@/components/AuthButton";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -19,6 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
+        <div className="w-full">
+          <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 absolute z-50">
+            <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
+              <a className="btn btn-ghost">KAAA 🦅🦅🦅</a>
+              <AuthButton />
+            </div>
+          </nav>
+        </div>
         <main className="min-h-screen flex flex-col items-center">
           {children}
         </main>
