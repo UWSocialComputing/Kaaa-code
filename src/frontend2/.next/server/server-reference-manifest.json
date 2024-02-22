@@ -2,23 +2,23 @@
   "node": {
     "f3f66089ffb9c871eef83dec6177706a6dc4d7db": {
       "workers": {
-        "app/page": "(rsc)/../../../../../../../usr/local/lib/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
-        "app/protected/page": "(rsc)/../../../../../../../usr/local/lib/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
-        "app/login/page": "(rsc)/../../../../../../../usr/local/lib/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2Flogin%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_3%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
-        "app/not-found": "(rsc)/../../../../../../../usr/local/lib/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
-        "app/dashboard/page": "(rsc)/../../../../../../../usr/local/lib/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!"
+        "app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
+        "app/login/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2Flogin%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_3%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
+        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
+        "app/addGroup/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2FaddGroup%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!",
+        "app/not-found": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/page": "rsc",
-        "app/protected/page": "rsc",
         "app/login/page": "rsc",
-        "app/not-found": "rsc",
-        "app/dashboard/page": "rsc"
+        "app/dashboard/page": "rsc",
+        "app/addGroup/page": "rsc",
+        "app/not-found": "rsc"
       }
     },
     "36d5947e8374399f665a8b09ce6f1de5d7a1604c": {
       "workers": {
-        "app/login/page": "(rsc)/../../../../../../../usr/local/lib/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2Flogin%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_3%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!"
+        "app/login/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2Flogin%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_3%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/login/page": "rsc"
@@ -26,13 +26,21 @@
     },
     "a8a490d655eaa8b8d7677c7c24e717ae0520a0d4": {
       "workers": {
-        "app/login/page": "(rsc)/../../../../../../../usr/local/lib/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2Flogin%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_3%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!"
+        "app/login/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2Flogin%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_3%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
         "app/login/page": "rsc"
       }
+    },
+    "5af98c7ef6d58c30457a47fb6da1762685cbbe2d": {
+      "workers": {
+        "app/addGroup/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fapp%2FaddGroup%2Fpage.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%2C%5B%22%2FUsers%2Fasuresh%2FDocuments%2F481p%2FKaaa-code%2Fsrc%2Ffrontend2%2Fcomponents%2FAuthButton.tsx%22%2C%5B%22%24%24ACTION_1%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/addGroup/page": "rsc"
+      }
     }
   },
   "edge": {},
-  "encryptionKey": "S1qn93iKr4293vYI794hhP7wmmzxREGzZO8JWtKuQGo="
+  "encryptionKey": "RtoWSvH18e3ah102K5vE58XqEy3lHqc6pG3Kr3ayhjM="
 }
