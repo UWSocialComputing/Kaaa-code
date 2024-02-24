@@ -16,13 +16,10 @@ export default async function Dashboard() {
     return redirect("/login");
   }
 
-  const { data: [groups] } = await supabase
-  .from('usersgroups')
-  .select('*')
-  .filter('user', 'eq', user.email)
+  const { data: [groups] } = await supabase.from('usersgroups').select('*').filter('user', 'eq', user.email);
 
-  let groupIds = groups.groups
-  let groupIdsWithName = groups.groupNamesAndId;
+  let groupIds = groups != null ? groups.groups : [];
+  let groupIdsWithName = groups != null ? groups.groupNamesAndId : [];
   let namesToId = new Map();
 
   groupIds.forEach(element => {
@@ -52,7 +49,7 @@ export default async function Dashboard() {
             Groups
           </p>
           <span className="justify-center pt-2">
-            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addgroup">
+            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addGroup">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
