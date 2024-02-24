@@ -16,8 +16,33 @@ export default async function Dashboard() {
     return redirect("/login");
   }
 
+  const { data: [groups] } = await supabase
+  .from('usersgroups')
+  .select('*')
+  .filter('user', 'eq', user.email)
+
+  let groupIds = groups.groups
+  let groupIdsWithName = groups.groupNamesAndId;
+  let namesToId = new Map();
+
+  groupIds.forEach(element => {
+    namesToId.set(groupIdsWithName[element], element);
+  });
+
+  let groupList = Array.from(namesToId.keys());
+  console.log(groupList);
+
+  const { data: [friends] } = await supabase
+  .from('friends')
+  .select('*')
+  .filter('user', 'eq', user.email)
+
+  let friendList = []
+  if (friends) {
+    friendList = friends.allFriends.friends;
+  }
+
   // FOR TESTING PURPOSES ONLY
-  const groupList = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's'];
 
   return (
     <div className="h-screen grid grid-cols-2 gap-x-32 pt-10">
@@ -35,9 +60,9 @@ export default async function Dashboard() {
           </span>
         </div>
         <br />
-        <div className="pt-1 grid justify-items-center overflow-y-auto flex flex-1 space-y-1">
-          {Array.from({ length: groupList.length }, (_, index) => (
-            <button className="text-4xl w-full border-2 border-gray-300 rounded-xl hover:bg-gray-300 h-14">{groupList[index]}</button>
+        <div className="pt-1 grid justify-items-center overflow-y-auto space-y-2">
+          { groupList.length == 0 ? <p>no groups :(</p> : Array.from({ length: groupList.length }, (_, index) => (
+            <button className="text-4xl w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{groupList[index]}</button>
           ))}
         </div>
       </div>
@@ -56,9 +81,9 @@ export default async function Dashboard() {
           </span>
         </div>
         <br />
-        <div className="pt-1 grid justify-items-center overflow-y-auto flex flex-1 space-y-1">
-          {Array.from({ length: groupList.length }, (_, index) => (
-            <button className="text-4xl w-full border-2 border-gray-300 rounded-xl hover:bg-gray-300 h-14">{groupList[index]}</button>
+        <div className="pt-1 grid justify-items-center overflow-y-auto space-y-2">
+          { friendList.length == 0 ? <p>no frens :(</p> : Array.from({ length: friendList.length }, (_, index) => (
+            <button className="text-xl w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{friendList[index]}</button>
           ))}
         </div>
       </div>
