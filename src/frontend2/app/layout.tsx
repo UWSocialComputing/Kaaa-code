@@ -13,6 +13,9 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
+/**
+ * Main layout of webapp, including navbar and tabs
+ */
 export default function RootLayout({
   children,
 }: {

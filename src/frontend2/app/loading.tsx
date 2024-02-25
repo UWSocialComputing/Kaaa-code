@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Loading screen
+ */
 export default async function Loading() {
 
     return (

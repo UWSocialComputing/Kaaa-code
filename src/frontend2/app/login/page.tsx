@@ -4,11 +4,17 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 
+/**
+ * Login tab
+ * @param searchParams contains message to be displayed below sign-up button
+ */
 export default function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  // Query backend to verify user credentials
+  // If succesful, redirect to dashboard
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -29,6 +35,7 @@ export default function Login({
     return redirect("/dashboard");
   };
 
+  // Query backend to create new user
   const signUp = async (formData: FormData) => {
     "use server";
 

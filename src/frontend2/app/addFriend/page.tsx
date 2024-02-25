@@ -4,14 +4,18 @@ import React from 'react';
 import Link from "next/link";
 import { SubmitButton } from "../login/submit-button";
 
+/**
+ * Add friends page of webapp
+ */
 export default async function Dashboard() {
-
+    // Query backend for user data
     const supabase = createClient();
 
     const {
         data: { user },
     } = await supabase.auth.getUser();
 
+    // Redirect to login page if user isn't logged in
     if (!user) {
         return redirect("/login");
     }
