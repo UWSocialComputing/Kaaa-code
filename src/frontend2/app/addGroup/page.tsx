@@ -27,7 +27,6 @@ export default async function Dashboard() {
 
         const groupName = formData.get("groupName") as string;
         let res = await createGroup(groupName);
-        redirect("/dashboard");
     }
 
     return (

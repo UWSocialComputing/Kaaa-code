@@ -1,4 +1,6 @@
+"use server"
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 const supabase = createClient();
 
@@ -18,7 +20,7 @@ async function getUserGroups(user: string | undefined) {
     return data;
 }
 
-async function updateUserWithNewGroup(groupId: number, name: string) {
+export async function updateUserWithNewGroup(groupId: number, name: string) {
 
     const {
         data: { user },
@@ -42,6 +44,9 @@ async function updateUserWithNewGroup(groupId: number, name: string) {
         ids.push(groupId);
         // js add name -> groupid to object
         names = { ...names, [groupId]: name }
+        ids = ids.filter(function(item: any, pos: any) {
+            return ids.indexOf(item) == pos;
+        })
 
         const { error } = await supabase
             .from('usersgroups')
@@ -85,5 +90,6 @@ export async function createGroup(name: string) {
         return false
     }
     updateUserWithNewGroup(data[0].id, name)
+    redirect("/addgroup/show/"+data[0].id+"/"+name);
     return true;
 }

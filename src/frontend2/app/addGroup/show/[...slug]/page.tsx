@@ -1,21 +1,18 @@
+"use client"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import React from 'react';
+import React, { useState } from 'react';
 import Link from "next/link";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default function Page({ params }: { params: { slug: string } }) {
     // Query backend for user data
-    const supabase = createClient();
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    // Redirect to login page if user isn't logged in
-    if (!user) {
-        return redirect("/login");
+    const [copyText, setCopyText] = useState("(^^ click to copy)");
+    
+    let copy = (e: any) => {
+        setCopyText("Copied!");
+        navigator.clipboard.writeText("https://localhost:3000/addgroup/join/"+params.slug[0]+"/"+params.slug[1]);
     }
-
 
     return (
         <>
@@ -41,11 +38,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     Back
                 </Link>
 
-                <div className="pt-96 text-success">
-                    <div role="alert" className="alert">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="text-success stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span className="text-success">Joined Group "{params.slug}"</span>
-                    </div>
+                <div className="pt-96 text-success text-center space-y-3 flex flex-col">
+                    <p>Users can join your new group by going to the following link:</p>
+                    <button onClick={copy} className="text-primary border border-primary rounded-lg p-2 hover:bg-primary hover:text-white">https://localhost:3000/addgroup/join/{params.slug[0]}/{params.slug[1]}</button>
+                    <p className="text-warning">{copyText}</p>
                 </div>
             </div>
         </>
