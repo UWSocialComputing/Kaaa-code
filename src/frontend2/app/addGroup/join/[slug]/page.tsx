@@ -2,13 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import React from 'react';
 import Link from "next/link";
-import { SubmitButton } from "../login/submit-button";
-import { createGroup } from "../scripts/groups";
 
-/**
- * Add group screen
- */
-export default async function Dashboard() {
+export default async function Page({ params }: { params: { slug: string } }) {
     // Query backend for user data
     const supabase = createClient();
 
@@ -21,18 +16,10 @@ export default async function Dashboard() {
         return redirect("/login");
     }
 
-    // FOR TESTING PURPOSES ONLY
-    const submit = async (formData : FormData) => {
-        "use server"
-
-        const groupName = formData.get("groupName") as string;
-        let res = await createGroup(groupName);
-        redirect("/dashboard");
-    }
 
     return (
         <>
-            <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+            <div className="flex-1 flex w-full px-8 sm:max-w-md justify-center gap-2">
                 <Link
                     href="/dashboard"
                     className="absolute left-8 z-50 top-20 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
@@ -53,23 +40,14 @@ export default async function Dashboard() {
                     </svg>{" "}
                     Back
                 </Link>
-                <form className="animate-in flex-1 flex flex-col w-full max-w-xl justify-center gap-2 text-foreground">
-                    <p className="place-items-center text-4xl pb-10">Add Group</p>
-                    <input
-                        className="rounded-md px-4 py-2 bg-inherit border mb-6"
-                        name="groupName"
-                        placeholder="Group Name"
-                        required
-                    />
-                    <SubmitButton
-                        formAction={submit}
-                        className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2 btn btn-primary"
-                        pendingText="Adding Group..."
-                    >
-                        Add Group
-                    </SubmitButton>
-                </form>
+
+                <div className="pt-96 text-success">
+                    <div role="alert" className="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="text-success stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span className="text-success">Joined Group "{params.slug}"</span>
+                    </div>
+                </div>
             </div>
         </>
-    );
-}
+    )
+};
