@@ -1,6 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import AuthButton from "@/components/AuthButton";
 import "./globals.css";
+import Link from "next/link";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -12,6 +13,9 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
+/**
+ * Main layout of webapp, including navbar and tabs
+ */
 export default function RootLayout({
   children,
 }: {
@@ -23,7 +27,7 @@ export default function RootLayout({
         <div className="w-full absolute">
           <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 absolute z-50">
             <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-              <a className="btn btn-ghost">KAAA 🦅🦅🦅</a>
+              <Link  href="/dashboard" className="btn btn-ghost">KAAA 🦅🦅🦅</Link>
               <AuthButton />
             </div>
           </nav>

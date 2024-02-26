@@ -4,14 +4,18 @@ import React from 'react';
 import Link from "next/link";
 import { SubmitButton } from "../login/submit-button";
 
+/**
+ * Add friends page of webapp
+ */
 export default async function Dashboard() {
-
+    // Query backend for user data
     const supabase = createClient();
 
     const {
         data: { user },
     } = await supabase.auth.getUser();
 
+    // Redirect to login page if user isn't logged in
     if (!user) {
         return redirect("/login");
     }
@@ -28,7 +32,7 @@ export default async function Dashboard() {
         <>
             <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
                 <Link
-                    href="/"
+                    href="/dashboard"
                     className="absolute left-8 z-50 top-20 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center friend text-sm"
                 >
                     <svg
