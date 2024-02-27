@@ -11,7 +11,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     
     let copy = (e: any) => {
         setCopyText("Copied!");
-        navigator.clipboard.writeText("https://localhost:3000/addgroup/join/"+params.slug[0]+"/"+params.slug[1]);
+        navigator.clipboard.writeText("https://localhost:3000/addGroup/join/"+params.slug[0]+"/"+params.slug[1]);
     }
 
     return (

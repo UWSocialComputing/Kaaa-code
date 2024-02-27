@@ -90,6 +90,6 @@ export async function createGroup(name: string) {
         return false
     }
     updateUserWithNewGroup(data[0].id, name)
-    redirect("/addgroup/show/"+data[0].id+"/"+name);
+    redirect("/addGroup/show/"+data[0].id+"/"+name);
     return true;
 }

@@ -36,6 +36,7 @@ export default async function Dashboard() {
   });
 
   let groupList = Array.from(namesToId.keys());
+  let idList = groupList.map(name => namesToId.get(name));
 
   // Query backend for user's friends data
   const { data: [friends] } = await supabase
@@ -53,7 +54,7 @@ export default async function Dashboard() {
             Groups
           </p>
           <span className="justify-center pt-2">
-            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addgroup">
+            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addGroup">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
@@ -61,9 +62,9 @@ export default async function Dashboard() {
           </span>
         </div>
         <br />
-        <div className="pt-1 grid justify-items-center overflow-y-auto space-y-2">
+        <div className="pt-1 grid justify-items-center text-center overflow-y-auto space-y-2">
           { groupList.length == 0 ? <p>no groups :(</p> : Array.from({ length: groupList.length }, (_, index) => (
-            <button className="text-4xl w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{groupList[index]}</button>
+            <a key={idList[index]} href={"./group/"+idList[index]} className="text-xl pt-2 w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{groupList[index]}</a>
           ))}
         </div>
       </div>
@@ -74,7 +75,7 @@ export default async function Dashboard() {
             Friends
           </p>
           <span className="justify-center pt-2">
-            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addfriend">
+            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addFriend">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
@@ -84,7 +85,7 @@ export default async function Dashboard() {
         <br />
         <div className="pt-1 grid justify-items-center overflow-y-auto space-y-2">
           { friendList.length == 0 ? <p>no frens :(</p> : Array.from({ length: friendList.length }, (_, index) => (
-            <button className="text-xl w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{friendList[index]}</button>
+            <button key={friendList[index]} className="text-xl w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{friendList[index]}</button>
           ))}
         </div>
       </div>

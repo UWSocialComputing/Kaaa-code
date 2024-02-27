@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.17.3",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
