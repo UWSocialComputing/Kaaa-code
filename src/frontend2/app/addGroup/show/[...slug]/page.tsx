@@ -39,9 +39,13 @@ export default function Page({ params }: { params: { slug: string } }) {
                 </Link>
 
                 <div className="pt-96 text-success text-center space-y-3 flex flex-col">
-                    <p>Users can join your new group by going to the following link:</p>
+                    <p>Group Created!</p>
+                    <p>Share this link with your friends so they can join:</p>
                     <button onClick={copy} className="text-primary border border-primary rounded-lg p-2 hover:bg-primary hover:text-white">https://localhost:3000/addgroup/join/{params.slug[0]}/{params.slug[1]}</button>
                     <p className="text-warning">{copyText}</p>
+                    <Link href="/dashboard" className="bg-green-700 border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2 text-center">
+                        Continue to Dashboard
+                    </Link>
                 </div>
             </div>
         </>
