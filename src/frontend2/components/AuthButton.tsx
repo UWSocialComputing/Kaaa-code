@@ -18,16 +18,6 @@ export default async function AuthButton() {
     return redirect("/login");
   };
 
-  /*
-        Hey, { user.email }!
-    < form action = { signOut } >
-      <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
-        Logout
-      </button>
-      </form >
-    </div >
-  */
-
   return user ? (
     <div className="flex items-center gap-4">
       <div className="dropdown dropdown-end">
@@ -43,8 +33,7 @@ export default async function AuthButton() {
             </div>
           </li>
           <li><a href="/dashboard">Dashboard</a></li>
-          <li><a href="/addgroup">Add Group</a></li>
-          <li><a href="/addfriend">Add Friend</a></li>
+          <li><a href="/addGroup">Add Group</a></li>
           <form action={signOut} >
             <li>
               <button className="w-full h-full">
@@ -58,7 +47,7 @@ export default async function AuthButton() {
   ) : (
     <Link
       href="/login"
-      className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
+      className="btn btn-primary py-2 px-3 flex rounded-md no-underline hover:ring ring-primary ring-offset-2"
     >
       Login
     </Link>

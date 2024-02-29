@@ -7,6 +7,7 @@ import { updateUserWithNewGroup } from "@/app/scripts/groups";
 export default async function Page({ params }: { params: { slug: string } }) {
     // Query backend for user data
     const [joining, setJoining] = useState(true);
+    const [failed, setFailed] = useState(false);
 
     useEffect(() => {
         checkAuth();
@@ -15,8 +16,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
     async function joinGroup() {
         if (joining) {
-            let group = params.slug[1].split('%20').join(' ');
-            await updateUserWithNewGroup(parseInt(params.slug[0]), group);
+            let res = await updateUserWithNewGroup(parseInt(params.slug[0]));
+            setFailed(!res);
             setJoining(false);
         }
     }
@@ -27,7 +28,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <div className="flex-1 flex flex-col place-items-center w-full px-8 sm:max-w-md justify-center gap-2">
                     <span className="loading loading-spinner loading-lg"></span>
                     <p>Joining group...</p>
-                    <p className='text-xs'>{params.slug[0]} / {params.slug[1].split('%20').join(' ')}</p>
                 </div> :
                 <div className="flex-1 flex w-full px-8 sm:max-w-md justify-center gap-2">
                     <Link
@@ -52,11 +52,23 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     </Link>
 
                     <div className="pt-96 text-success flex flex-col space-y-2 text-center">
-                        <div role="alert" className="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="text-success stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span className="text-success">Joined Group "{params.slug}"</span>
-                        </div>
-                        <a href="/" className="text-sm text-primary underline">go to group &raquo;</a>
+                        {failed ?
+                            <div role="alert alert-error" className="alert">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-error w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                </svg>
+
+                                <span className="text-error">Failed to join Group "{params.slug}"</span>
+                            </div>
+                            :
+                            <>
+                                <div role="alert" className="alert">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="text-success stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <span className="text-success">Joined Group "{params.slug}"</span>
+                                </div>
+                                <a href="/" className="text-sm text-primary underline">go to group &raquo;</a>
+                            </>
+                        }
                     </div>
                 </div>
             }

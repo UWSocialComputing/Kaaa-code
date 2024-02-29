@@ -22,73 +22,33 @@ export default async function Dashboard() {
   }
 
   // Query backend for user's group data
-  const { data: [groups] } = await supabase
+  const { data: groups } = await supabase
     .from('usersgroups')
-    .select('*')
+    .select('group_id, name: groups(name)')
     .filter('user', 'eq', user.email);
 
-  let groupIds = groups != null ? groups.groups : [];
-  let groupIdsWithName = groups != null ? groups.groupNamesAndId : [];
-  let namesToId = new Map();
-
-  groupIds.forEach(element => {
-    namesToId.set(groupIdsWithName[element], element);
-  });
-
-  let groupList = Array.from(namesToId.keys());
-  let idList = groupList.map(name => namesToId.get(name));
-
-  // Query backend for user's friends data
-  const { data: [friends] } = await supabase
-    .from('friends')
-    .select('*')
-    .filter('user', 'eq', user.email);
-
-  let friendList = friends != null ? friends.allFriends.friends : [];
+  console.log(groups);
 
   return (
-    <div className="h-screen grid grid-cols-2 gap-x-32 pt-10">
-      <div className="py-10 flex flex-col hidden lg:flex min-w-56 overflow-y-hidden">
-        <div className="flex flex-row justify-between">
-          <p className="justify-center flex font-extrabold text-3xl">
-            Groups
-          </p>
-          <span className="justify-center pt-2">
-            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addGroup">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-            </a>
-          </span>
-        </div>
-        <br />
-        <div className="pt-1 grid justify-items-center text-center overflow-y-auto space-y-2">
-          { groupList.length == 0 ? <p>no groups :(</p> : Array.from({ length: groupList.length }, (_, index) => (
-            <a key={idList[index]} href={"./group/"+idList[index]} className="text-xl pt-2 w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{groupList[index]}</a>
-          ))}
-        </div>
-      </div>
 
-      <div className="py-10 flex flex-col hidden lg:flex min-w-56 overflow-y-hidden">
-        <div className="flex flex-row justify-between">
-          <p className="justify-center flex font-extrabold text-3xl">
-            Friends
-          </p>
-          <span className="justify-center pt-2">
-            <a className="rounded-lg hover:bg-primary btn btn-primary btn-ghost hover:btn-primary btn-xs" href="/addFriend">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-            </a>
-          </span>
-        </div>
-        <br />
-        <div className="pt-1 grid justify-items-center overflow-y-auto space-y-2">
-          { friendList.length == 0 ? <p>no frens :(</p> : Array.from({ length: friendList.length }, (_, index) => (
-            <button key={friendList[index]} className="text-xl w-full border-2 border-gray-300 rounded-xl hover:bg-primary h-14">{friendList[index]}</button>
-          ))}
-        </div>
+    <div className="w-screen flex flex-col mt-20 place-items-center justify-center">
+      <div className="w-full max-w-3xl flex justify-between items-center p-3 text-sm mt-20">
+        <p className="text-2xl font-bold">Your groups</p>
+        <a href="/addGroup" className="btn btn-primary btn-md hover:ring ring-primary ring-offset-2">
+          Add
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </a>
+      </div>
+      <div className="grid grid-cols-5 grid-rows-4 gap-y-6 gap-4 mt-10">
+        {groups.length == 0 ? <p className="col-span-5 text-center">Uh oh! Looks like you have no groups with your friends <a href="/addGroup" className="btn text-neutral btn-link">Add one?</a></p> : Array.from({ length: groups.length }, (_, index) => (
+          <>
+            <a key={groups[index].group_id} href={"./group/" + groups[index].group_id} className="text-xl pt-3.5 w-full rounded-lg ring hover:ring-offset-2 ring-primary ring-offset-0 hover:bg-primary/[.5] p-2 text-xl text-center h-14">{groups[index].name.name}</a>
+          </>
+        ))}
       </div>
     </div>
+
   );
 }
