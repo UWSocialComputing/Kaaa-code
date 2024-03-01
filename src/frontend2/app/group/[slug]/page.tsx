@@ -5,11 +5,11 @@ import Link from "next/link"
 
 export default function Group() {
     return (
-        <>
+        <div className="flex w-screen pt-16">
             <div className="flex flex-1 flex-col w-full px-8 w-8/12 justify-center">
                 <Link
                     href="/dashboard"
-                    className="absolute left-8 z-50 top-20 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
+                    className=" left-8 z-50 top-20 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -42,6 +42,9 @@ export default function Group() {
                     </div>
                 </div>
             </div>
-        </>
+            <div className="w-1/6">
+                <Link href="/dashboard">Whiteboard</Link>
+            </div>
+        </div>
     )
 }
