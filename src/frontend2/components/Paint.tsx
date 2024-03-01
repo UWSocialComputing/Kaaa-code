@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { MainMenu, WelcomeScreen, exportToSvg } from "@excalidraw/excalidraw";
 import { ExcalidrawImperativeAPI, ImportedDataState, ExcalidrawElement } from "@excalidraw/excalidraw/dist/excalidraw/types";
-import { getUserLiveData, uploadLive } from "@/app/scripts/paint";
+import { getUserLiveData, uploadLive, uploadFinal } from "@/app/scripts/paint";
 import { useEffect, useState } from "react";
 import { checkAuth } from "@/app/auth/auth";
 const Excalidraw = dynamic(
@@ -20,9 +20,6 @@ export default async function Paint({ group }: { group: number }) {
     const [loading, setLoading] = useState(true);
     const [initialData, setInitialData] = useState<ImportedDataState>({ elements: [], appState: {}, scrollToContent: true });
 
-    //let live = await getUserLiveData("user", group);
-    //console.log(live);
-
     let user: string | undefined = "";
 
     useEffect(() => {
@@ -39,6 +36,10 @@ export default async function Paint({ group }: { group: number }) {
                     setInitialData({ elements: d.active_drawing_json.elements, appState: {}, scrollToContent: true });
                 }
             }
+            if (d.active_drawing_svg != null) {
+                setSvg(d.active_drawing_svg);
+                console.log(d.active_drawing_svg)
+            }
             setLoading(false);
         }
 
@@ -48,7 +49,7 @@ export default async function Paint({ group }: { group: number }) {
     });
 
     let saveLiveToCloud = async () => {
-        let elements = excalidrawAPI.getSceneElements();
+        let elements = await excalidrawAPI.getSceneElements();
         user = await checkAuth();
         if (user && user!="") {
             await uploadLive(user, group, elements);
@@ -56,13 +57,17 @@ export default async function Paint({ group }: { group: number }) {
     }
 
     let saveFinishedToCloud = async () => {
+        saveLiveToCloud();
+        let elements = await excalidrawAPI.getSceneElements();
         const svg = await exportToSvg({
-            elements: excalidrawAPI.getSceneElements(),
+            elements: elements,
             appState: {},
         });
-        //document.querySelector(".export-svg")!.innerHTML = svg.outerHTML;
-        setSvg(svg);
-        // uploadLive(excalidrawAPI.getSceneElements());
+        user = await checkAuth();
+        if (user && user!="") {
+            setSvg(svg);
+            await uploadFinal(user, group, svg.innerHTML);
+        }
     }
 
 
@@ -96,7 +101,6 @@ export default async function Paint({ group }: { group: number }) {
                             initialData={initialData}
                             UIOptions={{ tools: { image: false } }}
                             excalidrawAPI={(api) => {
-                                console.log(initialData);
                                 setExcalidrawAPI(api);
                             }}>
                             <MainMenu>
@@ -111,7 +115,7 @@ export default async function Paint({ group }: { group: number }) {
                         <div className="">
                             {
                                 svg != null ?
-                                    <svg dangerouslySetInnerHTML={{ __html: svg.innerHTML }} />
+                                    <svg dangerouslySetInnerHTML={{ __html: svg }} />
                                     :
                                     <></>
                             }
