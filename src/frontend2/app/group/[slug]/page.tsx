@@ -54,7 +54,7 @@ export default function Group({ params }: { params: { slug: string } }) {
                         <div className="divider"></div>
                         <div>
                             <div style={{ height: "50vh" }}>
-                                <Paint />
+                                <Paint group={parseInt(params.slug)} />
                             </div>
                         </div>
                     </div>
