@@ -64,3 +64,21 @@ export async function createGroup(name: string) {
     redirect("/addGroup/show/" + data[0].id);
     return true;
 }
+
+/**
+ * Queries backend for group's timestamp
+ * @param groupId the ID of the group to be 
+ * @returns the timestamp of the group
+ */
+export async function queryTimestamp(groupId: string) {
+    const {data: timestamp, error} = await supabase
+        .from('groups')
+        .select('last_prompt_updated')
+        .filter('id', 'eq', parseInt(groupId));
+
+    if (error) {
+        console.log(error);
+    }
+    
+    return timestamp;
+}

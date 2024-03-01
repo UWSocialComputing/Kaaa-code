@@ -6,7 +6,7 @@ import { SubmitButton } from "../login/submit-button";
 
 /**
  * Signup tab
- * @param searchParams contains message to be displayed below sign-up button
+ * @param message contains message to be displayed below sign-up button
  */
 export default function Signup({
   searchParams,

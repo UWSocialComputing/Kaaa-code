@@ -2,8 +2,26 @@
 
 import Paint from "@/components/Paint"
 import Link from "next/link"
+import { queryTimestamp } from "@/app/scripts/groups";
+import { useState, useEffect } from 'react';
 
-export default function Group() {
+export default function Group({ params }: { params: { slug: string } }) {
+    // Query backend for timestamp
+    const [lastPromptUpdated, setLastPromptUpdated] = useState<Date>(new Date());
+    useEffect(() => {
+        setTimestamp();
+    });
+
+    async function setTimestamp() {
+        let data = await queryTimestamp(params.slug);
+        if (data) setLastPromptUpdated(data[0].last_prompt_updated);
+    }
+
+    const now = new Date();
+    if (lastPromptUpdated instanceof Date && now.getTime() - lastPromptUpdated.getTime() > 300000) {
+        // Then we need to update the prompt
+    }
+
     return (
         <div className="flex w-screen pt-16">
             <div className="flex flex-1 flex-col w-full px-8 w-8/12 justify-center">
