@@ -4,6 +4,11 @@ import { redirect } from "next/navigation";
 
 const supabase = createClient();
 
+/**
+ * Get all groups belonging to a user
+ * @param user the user whose groups are to be queried
+ * @returns the user's groups
+ */
 async function getUserGroups(user: string | undefined) {
 
     const { data, error } = await supabase
@@ -18,6 +23,11 @@ async function getUserGroups(user: string | undefined) {
     return data;
 }
 
+/**
+ * Adds the logged in user to a group
+ * @param groupId the group to add the logged in user to
+ * @returns true if succesful, false otherwise
+ */
 export async function updateUserWithNewGroup(groupId: number) {
 
     const {
@@ -36,12 +46,19 @@ export async function updateUserWithNewGroup(groupId: number) {
     return true;
 }
 
+/**
+ * Creates a group of a specified name, with a new if, prompt, this date stamp as the last_prompt_updated,
+ * and the logged in user as the owner.
+ * Adds the logged in user to the group.
+ * @param name the name that the group will have
+ * @returns true if succesful, false otherwise
+ */
 export async function createGroup(name: string) {
 
     const defaultOldPrompts = { "prompts": [], "timestamps": [] }
     let timestamp = new Date()
     let currPrompt = "What's on your mind?"
-    let mosaic = {}
+    let mosaics = {}
 
     const {
         data: { user },
@@ -53,7 +70,7 @@ export async function createGroup(name: string) {
 
     const { data, error } = await supabase
         .from('groups')
-        .insert({ name: name, prompt: currPrompt, mosaic, last_prompt_updated: timestamp, owner: user.email })
+        .insert({ name: name, prompt: currPrompt, mosaics, last_prompt_updated: timestamp, owner: user.email })
         .select();
 
     if (error) {
@@ -66,19 +83,53 @@ export async function createGroup(name: string) {
 }
 
 /**
- * Queries backend for group's timestamp
+ * Queries backend for group's data
  * @param groupId the ID of the group to be 
- * @returns the timestamp of the group
+ * @returns the data for the specified group
  */
-export async function queryTimestamp(groupId: string) {
-    const {data: timestamp, error} = await supabase
+export async function queryGroupData(groupId: string) {
+    const {data, error} = await supabase
         .from('groups')
-        .select('last_prompt_updated')
+        .select('last_prompt_updated, name')
         .filter('id', 'eq', parseInt(groupId));
 
-    if (error) {
+    if (error || !data) {
         console.log(error);
+        return null;
     }
-    
-    return timestamp;
+    const dateLastUpdated = new Date(data[0].last_prompt_updated + 'Z');
+    const now = new Date();
+    return { timeLeft: 300000 - (now.getTime() - dateLastUpdated.getTime()), groupName: data[0].name };
+}
+
+/**
+ * Deletes the logged in user from the specified group.
+ * If there are no more users in the group, deletes the group.
+ * @param groupId the Id of the group to be left
+ */
+export async function leaveGroup(groupId: string) {
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    await supabase
+        .from('usersgroups')
+        .delete()
+        .eq('user', user?.email)
+        .eq('group_id', groupId);
+
+    const { count } = await supabase
+        .from('usersgroups')
+        .select('*', { count: 'exact', head: true })
+        .eq('group_id', parseInt(groupId));
+    console.log(count);
+
+    if (count === 0) {
+        await supabase.
+            from('groups')
+            .delete()
+            .eq('id', parseInt(groupId));
+    }
+
+    redirect('/dashboard');
 }
