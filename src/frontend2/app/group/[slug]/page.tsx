@@ -3,7 +3,7 @@
 import Paint from "@/components/Paint"
 import Link from "next/link"
 
-export default function Group() {
+export default function Group({ params }: { params: { slug: string } }) {
     return (
         <div className="flex w-screen pt-16">
             <div className="flex flex-1 flex-col w-full px-8 w-8/12 justify-center">
@@ -36,7 +36,7 @@ export default function Group() {
                         <div className="divider"></div>
                         <div>
                             <div style={{ height: "50vh" }}>
-                                <Paint />
+                                <Paint group={parseInt(params.slug)} />
                             </div>
                         </div>
                     </div>

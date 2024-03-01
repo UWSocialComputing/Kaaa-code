@@ -12,4 +12,6 @@ export async function checkAuth() {
     if (!user) {
         redirect("/login");
     }
+
+    return user.email;
 }
