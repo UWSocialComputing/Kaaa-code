@@ -7,6 +7,11 @@ import Countdown from './countdown';
 import { useState, useEffect } from 'react';
 import { shouldAllowVerticalAlign } from "@excalidraw/excalidraw/types/element/textElement";
 
+/**
+ * The top-level group page of the app. Tabs are sub-levels
+ * @param param0 the ID of the group the user has selected
+ * @returns the group page
+ */
 export default function Group({ params }: { params: { slug: string } }) {
     // Query backend for timestamp
     const [groupName, setGroupName] = useState<string>("");

@@ -7,6 +7,12 @@ type Props = ComponentProps<"button"> & {
   pendingText?: string;
 };
 
+/**
+ * Specialized button, used when submitting forms drawing from text fields
+ * @param children children displayed by deafault
+ * @param pendingText children displayed while pending
+ * @returns the submit button
+ */
 export function SubmitButton({ children, pendingText, ...props }: Props) {
   const { pending, action } = useFormStatus();
 

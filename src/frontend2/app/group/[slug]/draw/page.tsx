@@ -3,6 +3,10 @@
 import Paint from "@/components/Paint"
 import Link from "next/link"
 
+/**
+ * The whiteboard page within the group page of the app
+ * @returns Whiteboard tab of the group page
+ */
 export default function Group() {
     return (
         <>

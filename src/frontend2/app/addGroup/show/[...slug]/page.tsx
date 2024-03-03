@@ -4,6 +4,11 @@ import { redirect } from "next/navigation";
 import React, { useState } from 'react';
 import Link from "next/link";
 
+/**
+ * Page that users are taken to after successfully creating a group
+ * @param param0 the ID of the group that was just created
+ * @returns the group created screen
+ */
 export default function Page({ params }: { params: { slug: string } }) {
     // Query backend for user data
 

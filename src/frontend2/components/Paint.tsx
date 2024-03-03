@@ -11,7 +11,11 @@ const Excalidraw = dynamic(
     },
 );
 
-
+/**
+ * Excalidraw library, used for whiteboard page
+ * @param param0 group ID of the selected group
+ * @returns the actual whiteboard feature
+ */
 export default async function Paint({ group }: { group: number }) {
 
 

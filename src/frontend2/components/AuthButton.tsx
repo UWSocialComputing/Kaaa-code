@@ -3,6 +3,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
+/**
+ * Sign in/ sign out button
+ * @returns the html for the login and logout button, depending on auth status of user
+ */
 export default async function AuthButton() {
   const supabase = createClient();
 

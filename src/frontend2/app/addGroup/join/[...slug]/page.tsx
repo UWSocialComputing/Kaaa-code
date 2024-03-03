@@ -4,6 +4,11 @@ import Link from "next/link";
 import { checkAuth } from "@/app/auth/auth";
 import { updateUserWithNewGroup } from "@/app/scripts/groups";
 
+/**
+ * Page that users are taken to after clicking a join group link
+ * @param param0 The ID of the group to be joined
+ * @returns The join group page
+ */
 export default async function Page({ params }: { params: { slug: string } }) {
     // Query backend for user data
     const [joining, setJoining] = useState(true);
