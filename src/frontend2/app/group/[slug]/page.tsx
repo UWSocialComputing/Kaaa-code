@@ -82,10 +82,10 @@ export default function Group({ params }: { params: { slug: string } }) {
                     <Link href="/" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Whiteboard
                     </Link>
-                    <Link href="/" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
+                    <Link href="/group/mosaic" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Mosaic
                     </Link>
-                    <Link href="/" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
+                    <Link href="/group/gallery" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Gallery
                     </Link>
                     <button onClick={() => leaveGroup(params.slug)} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-accent hover:ring-offset-2 ring-offset-0 hover:bg-accent/[.5]">
