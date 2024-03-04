@@ -32,7 +32,7 @@ export default function Group({ params }: { params: { slug: string } }) {
     }
 
     if (timeLeft < 0) {
-        alert("The time limit for this prompt has been exceeded by " + timeLeft / 1000 + " seconds");
+        console.log("The time limit for this prompt has been exceeded by " + timeLeft / 1000 + " seconds");
     }
 
     return (
