@@ -137,9 +137,13 @@ export async function leaveGroup(groupId: string) {
     redirect('/dashboard');
 }
 
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 /**
- * Updates the prompt for the group. Handles race conditions by waiting
- * Supabase doesn't offer transactions so this is an imperfect solution
+ * Updates the prompt for the group.
+ * Supabase doesn't offer transactions so this doesn't deal with race conditions.
  * @param groupId the id of the group whose prompt is to be updates
  * @returns The new time left, the new prompt
  */
@@ -147,59 +151,17 @@ export async function updatePrompt(groupId: string) {
     const numPrompts = Object.keys(Prompts).length;
     const nextPrompt = Math.floor(Math.random() * numPrompts);
     const timestamp = new Date();
-    const lastUpdated = new Date(timestamp.getTime() - 300000);
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
 
     const { data, error } = await supabase
-        .from('usersgroups')
-        .select('user')
-        .eq('group_id', parseInt(groupId))
-        .order('user', { ascending: true });
+        .from('groups')
+        .update({ prompt: Prompts[nextPrompt], last_prompt_updated: timestamp })
+        .eq('id', parseInt(groupId))
+        .select('last_prompt_updated, prompt');
 
-    if (error) {
+    if (!data || error) {
         console.log(error);
         return null;
     }
-    const users = data;
 
-    if (user && users) {
-        // Iterate through group member array. If this user is the current, update, otherwise wait, and see if the current member updated
-        for (let i = 0; i < users.length; i++) {
-            if (user.email === users[i].user) {
-                const { data, error } = await supabase
-                    .from('groups')
-                    .update({ prompt: Prompts[nextPrompt], last_prompt_updated: timestamp })
-                    .eq('id', parseInt(groupId))
-                    .eq('owner', user.email)
-                    .select('last_prompt_updated, prompt');
-            
-                if (!data || error) {
-                    console.log(error);
-                    return null;
-                }
-            
-                return { timeLeft: 300000 - ((new Date()).getTime() - (new Date(data[0].last_prompt_updated + 'Z')).getTime()), prompt: data[0].prompt };
-            } else {
-                setTimeout(() => {}, 5000); // Wait for 5 seconds to see if data is updated by current user in queue
-                const { data } = await supabase
-                    .from('groups')
-                    .select('last_prompt_updated, prompt')
-                    .eq('id', parseInt(groupId));
-
-                if (!data || error) {
-                    console.log(error);
-                    return null;
-                }
-
-                if ((new Date(data[0].last_prompt_updated + 'Z')).getTime() > lastUpdated.getTime()) {
-                    return { timeLeft: 300000 - ((new Date()).getTime() - (new Date(data[0].last_prompt_updated + 'Z')).getTime()), prompt: data[0].prompt };
-                }
-            }
-        }
-    }
-    
-    return null;
+    return { timeLeft: 300000 - ((new Date()).getTime() - (new Date(data[0].last_prompt_updated + 'Z')).getTime()), prompt: data[0].prompt };
 }
