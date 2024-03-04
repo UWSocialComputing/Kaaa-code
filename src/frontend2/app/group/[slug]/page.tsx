@@ -2,7 +2,8 @@
 
 import Paint from "@/components/Paint"
 import Link from "next/link"
-import { queryGroupData, leaveGroup } from "@/app/scripts/groups";
+import { redirect } from "next/navigation";
+import { queryGroupData, leaveGroup, updatePrompt } from "@/app/scripts/groups";
 import Countdown from './countdown';
 import { useState, useEffect } from 'react';
 import { shouldAllowVerticalAlign } from "@excalidraw/excalidraw/types/element/textElement";
@@ -16,6 +17,7 @@ export default function Group({ params }: { params: { slug: string } }) {
     // Query backend for timestamp
     const [groupName, setGroupName] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState<number>(0);
+    const [currentPrompt, setCurrentPrompt] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     
@@ -30,11 +32,21 @@ export default function Group({ params }: { params: { slug: string } }) {
         if (data) {
             setTimeLeft(data.timeLeft);
             setGroupName(data.groupName);
+            setCurrentPrompt(data.prompt);
         }
     }
 
-    if (timeLeft < 0) {
-        console.log("The time limit for this prompt has been exceeded by " + timeLeft / 1000 + " seconds");
+    if (timeLeft < 0 && !isLoading) {
+        setIsLoading(true);
+        updatePrompt(params.slug).then(data => {
+            setTimeLeft(data!.timeLeft);
+            setCurrentPrompt(data!.prompt);
+            setIsLoading(false);
+        });
+    }
+
+    const copy = (e: any) => {
+        navigator.clipboard.writeText("localhost:3000/addGroup/join/"+params.slug);
     }
 
     return (
@@ -64,8 +76,8 @@ export default function Group({ params }: { params: { slug: string } }) {
 
                     <div className="pb-10">
                         <div className="flex flex-col col-span-5">
-                            <div className="grid h-20 card ring ring-primary rounded-box place-items-center text-4xl">
-                                Draw something you did today  🖌️
+                            <div className="grid h-20 card bg-base-300 rounded-box place-items-center text-4xl">
+                                {currentPrompt}
                             </div>
                             <div className="divider"></div>
                             <div>
@@ -77,10 +89,14 @@ export default function Group({ params }: { params: { slug: string } }) {
                     </div>
                 </div>
                 <div className="w-1/6 pt-9 justify-between justify-items-center space-y-4">
-                    <div className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6">
-                        {groupName}
-                    </div>
-                    <Countdown className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6" timeLeft={timeLeft}></Countdown>
+                    <button onClick={copy} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-secondary hover:ring-offset-2 ring-offset-0 hover:bg-secondary/[.5]">
+                        {groupName} 🔗
+                    </button>
+                    <Countdown 
+                        className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6"
+                        timeLeft={timeLeft}
+                        onTimeout={() => {}}>
+                    </Countdown>
                     <Link href="/" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Whiteboard
                     </Link>
