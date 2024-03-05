@@ -138,7 +138,12 @@ export async function leaveGroup(groupId: string) {
     redirect('/dashboard');
 }
 
-export async function updateMosaic(groupId: string, timestamp: Date) {
+/**
+ * Updates the group's mosaic
+ * @param groupId the id of the group whose mosaic is being updated
+ * @param timestamp the time that the last prompt was given
+ */
+export async function updateMosaic(groupId: string, timestamp: Date, currentPrompt: string) {
     const { data, error } = await supabase
         .from('usersgroups')
         .select('active_drawing_svg')
@@ -153,13 +158,14 @@ export async function updateMosaic(groupId: string, timestamp: Date) {
             strs.push('<svg>' + datum.toString() + '</svg>');
         })
         const svgString = strs.join("");
+        const storageObject = { prompt: currentPrompt, svg: svgString };
 
         const { data, error } = await supabase
             .from('group')
             .select('mosaic')
             .eq('id', groupId);
         const jsonData = JSON.parse(data![0].toString());
-        jsonData[timestamp.getTime()] = svgString;
+        jsonData[timestamp.getTime()] = storageObject;
         
         await supabase
             .from('groups')
@@ -174,13 +180,16 @@ export async function updateMosaic(groupId: string, timestamp: Date) {
  * @param groupId the id of the group whose prompt is to be updates
  * @returns The new time left, the new prompt
  */
-export async function updatePrompt(groupId: string) {
+export async function updatePrompt(groupId: string, currentPrompt: string) {
     const numPrompts = Object.keys(Prompts).length;
-    const nextPrompt = Math.floor(Math.random() * numPrompts);
+    let nextPrompt = Math.floor(Math.random() * numPrompts);
+    while (Prompts[nextPrompt] === currentPrompt) {
+        nextPrompt = Math.floor(Math.random() * numPrompts)
+    }
     const timestamp = new Date();
 
     // Need to update mosaic too
-    updateMosaic(groupId, timestamp);
+    updateMosaic(groupId, timestamp, currentPrompt);
 
     const { data, error } = await supabase
         .from('groups')

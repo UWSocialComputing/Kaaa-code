@@ -32,7 +32,7 @@ export default function Group({ params }: { params: { slug: string } }) {
         if (data) {
             if (data.timeLeft < 0) {
                 setIsLoading(true);
-                updatePrompt(params.slug).then(data => {
+                updatePrompt(params.slug, currentPrompt).then(data => {
                     setTimeLeft(data!.timeLeft);
                     setCurrentPrompt(data!.prompt);
                     setIsLoading(false);
