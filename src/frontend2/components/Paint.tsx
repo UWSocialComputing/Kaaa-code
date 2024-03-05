@@ -44,7 +44,7 @@ export default function Paint({ group }: { group: number }) {
             }
             if (d.active_drawing_svg != null) {
                 setSvg(d.active_drawing_svg);
-                console.log(d.active_drawing_svg)
+                //console.log(d.active_drawing_svg)
             }
             setLoading(false);
         }

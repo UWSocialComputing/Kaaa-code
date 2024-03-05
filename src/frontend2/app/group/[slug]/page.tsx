@@ -7,6 +7,7 @@ import { queryGroupData, leaveGroup, updatePrompt } from "@/app/scripts/groups";
 import Countdown from './countdown';
 import { useState, useEffect } from 'react';
 import { shouldAllowVerticalAlign } from "@excalidraw/excalidraw/types/element/textElement";
+import { checkAuth } from "@/app/auth/auth";
 
 /**
  * The top-level group page of the app. Tabs are sub-levels
@@ -19,33 +20,52 @@ export default function Group({ params }: { params: { slug: string } }) {
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [currentPrompt, setCurrentPrompt] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [timer, setTimer] = useState<any>(<></>);
 
-    
+
     useEffect(() => {
+        // Check authorization
+        checkAuth();
         setIsLoading(true);
+        // While loading, do logic to update prompt if necessary
         setTimestamp();
         setIsLoading(false);
     }, []);
 
     async function setTimestamp() {
+        // get all group data
         let data = await queryGroupData(params.slug);
         if (data) {
-            if (data.timeLeft < 0) {
-                setIsLoading(true);
-                updatePrompt(params.slug).then(data => {
-                    setTimeLeft(data!.timeLeft);
-                    setCurrentPrompt(data!.prompt);
-                    setIsLoading(false);
-                });
+            console.log(data);
+            if (data.timeLeft <= 0) {
+                // There is no time left, so update the prompt and time left
+                let returned = await updatePrompt(params.slug);
+                if (returned) {
+                    setTimeLeft(returned.timeLeft);
+                    setCurrentPrompt(returned.prompt);
+                    // Setting the timer into state, forcing re-render with new timer
+                    // (Using state for timeLeft does not cause re-render for some reason)
+                    setTimer(<Countdown
+                        className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6"
+                        timeLeft={returned.timeLeft}/>);
+                } else {
+                    alert("Error updating prompt");
+                }
+            } else {
+                // There is time left, so just set the prompt and time left given in data
+                setCurrentPrompt(data.prompt);
+                setTimer(<Countdown
+                    className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6"
+                    timeLeft={data.timeLeft}/>)
             }
-            setTimeLeft(data.timeLeft);
+            // set group name
             setGroupName(data.groupName);
-            setCurrentPrompt(data.prompt);
         }
     }
 
     const copy = (e: any) => {
-        navigator.clipboard.writeText("localhost:3000/addGroup/join/"+params.slug);
+        // copies the magic invite link to the clipboard
+        navigator.clipboard.writeText(window.location.origin + "/addGroup/join/" + params.slug);
     }
 
     return (
@@ -75,7 +95,7 @@ export default function Group({ params }: { params: { slug: string } }) {
 
                     <div className="pb-10">
                         <div className="flex flex-col col-span-5">
-                            <div className="grid h-20 card bg-base-300 rounded-box place-items-center text-4xl">
+                            <div className="grid h-20 text-xl card bg-base-300 rounded-box place-items-center lg:text-2xl">
                                 {currentPrompt}
                             </div>
                             <div className="divider"></div>
@@ -91,11 +111,9 @@ export default function Group({ params }: { params: { slug: string } }) {
                     <button onClick={copy} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-secondary hover:ring-offset-2 ring-offset-0 hover:bg-secondary/[.5]">
                         {groupName} 🔗
                     </button>
-                    <Countdown 
-                        className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6"
-                        timeLeft={timeLeft}
-                        onTimeout={() => {}}>
-                    </Countdown>
+                    {
+                        timer
+                    }
                     <Link href="/" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Whiteboard
                     </Link>

@@ -38,14 +38,14 @@ export async function updateUserWithNewGroup(groupId: number) {
 
     const { data, error } = await supabase
         .from('usersgroups')
-        .insert({ user: user?.email, group_id: groupId, active_drawing_json: {}, active_drawing_svg: ""});
+        .insert({ user: user?.email, group_id: groupId, active_drawing_json: {}, active_drawing_svg: "" });
 
     if (error) {
         console.log(error);
-        return false;
+        return error.code;
     }
 
-    return true;
+    return 0;
 }
 
 /**
@@ -91,7 +91,7 @@ export async function createGroup(name: string) {
  * @returns the data for the specified group
  */
 export async function queryGroupData(groupId: string) {
-    const {data, error} = await supabase
+    const { data, error } = await supabase
         .from('groups')
         .select('last_prompt_updated, name, prompt')
         .filter('id', 'eq', parseInt(groupId));
@@ -139,7 +139,7 @@ export async function leaveGroup(groupId: string) {
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}
 
 /**
  * Updates the prompt for the group.
@@ -152,11 +152,27 @@ export async function updatePrompt(groupId: string) {
     const nextPrompt = Math.floor(Math.random() * numPrompts);
     const timestamp = new Date();
 
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return false
+    }
+
     const { data, error } = await supabase
         .from('groups')
         .update({ prompt: Prompts[nextPrompt], last_prompt_updated: timestamp })
         .eq('id', parseInt(groupId))
         .select('last_prompt_updated, prompt');
+
+
+    const {  } = await supabase
+        .from('usersgroups')
+        .update({ active_drawing_json: {}, active_drawing_svg: "" })
+        .eq('user', user.email)
+        .eq('group_id', parseInt(groupId));
+
 
     if (!data || error) {
         console.log(error);

@@ -12,11 +12,14 @@ import Link from "next/link";
 export default function Page({ params }: { params: { slug: string } }) {
     // Query backend for user data
 
+    // State to hold the copy text to allow re-render
     const [copyText, setCopyText] = useState("(^^ click to copy)");
     
     let copy = (e: any) => {
+        // copy the magic invite link to clipboard
         setCopyText("Copied!");
-        navigator.clipboard.writeText("localhost:3000/addGroup/join/"+params.slug[0]);
+        navigator.clipboard.writeText(window.location.origin + "/addGroup/join/"+params.slug[0]);
+        setTimeout(() => { setCopyText("(^^ click to copy)"); }, 2000);
     }
 
     return (

@@ -9,20 +9,33 @@ import { updateUserWithNewGroup } from "@/app/scripts/groups";
  * @param param0 The ID of the group to be joined
  * @returns The join group page
  */
-export default async function Page({ params }: { params: { slug: string } }) {
+export default function Page({ params }: { params: { slug: string } }) {
     // Query backend for user data
     const [joining, setJoining] = useState(true);
     const [failed, setFailed] = useState(false);
+    const DUPLICATE_KEY_ERR = '23505';
 
     useEffect(() => {
-        checkAuth();
-        joinGroup();
-    });
+        let temp = async function () {
+            // check to make sure user is logged in, otherwise redirect
+            await checkAuth();
+            // join the group
+            await joinGroup();
+        }
 
-    async function joinGroup() {
+        // call temporary function to force await on the async
+        temp();
+    }, []);
+
+    let joinGroup = async function () {
         if (joining) {
+            // make call to server with the group ID passed in URL
             let res = await updateUserWithNewGroup(parseInt(params.slug[0]));
-            setFailed(!res);
+            if (res != 0 && res != DUPLICATE_KEY_ERR) {
+                // If failed and it is not a duplicate key error, set failed to true
+                setFailed(true);
+            }
+            // removes the loading spinner
             setJoining(false);
         }
     }
