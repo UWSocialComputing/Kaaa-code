@@ -8,6 +8,7 @@ import Countdown from './countdown';
 import { useState, useEffect } from 'react';
 import { shouldAllowVerticalAlign } from "@excalidraw/excalidraw/types/element/textElement";
 import { checkAuth } from "@/app/auth/auth";
+import LeaveButton from './leaveButton';
 
 /**
  * The top-level group page of the app. Tabs are sub-levels
@@ -18,10 +19,10 @@ export default async function Group({ params }: { params: { slug: string } }) {
     // Query backend for timestamp
     const x = "";
     const [groupName, setGroupName] = useState<string>("");
-    const [timeLeft, setTimeLeft] = useState<number>(0);
     const [currentPrompt, setCurrentPrompt] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [timer, setTimer] = useState<any>(<></>);
+    const [isLeaving, setIsLeaving] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -43,7 +44,6 @@ export default async function Group({ params }: { params: { slug: string } }) {
                 // There is no time left, so update the prompt and time left
                 let returned = await updatePrompt(params.slug, data.prompt);
                 if (returned) {
-                    setTimeLeft(returned.timeLeft);
                     setCurrentPrompt(returned.prompt);
                     // Setting the timer into state, forcing re-render with new timer
                     // (Using state for timeLeft does not cause re-render for some reason)
@@ -116,18 +116,17 @@ export default async function Group({ params }: { params: { slug: string } }) {
                     {
                         timer
                     }
-                    <Link href="/" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
+                    <div className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Whiteboard
-                    </Link>
+                    </div>
                     <Link href={`/group/${params.slug}/mosaic`} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Mosaic
                     </Link>
                     <Link href={`/group/${params.slug}/gallery`} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Gallery
                     </Link>
-                    <button onClick={() => leaveGroup(params.slug)} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-accent hover:ring-offset-2 ring-offset-0 hover:bg-accent/[.5]">
-                        Leave Group
-                    </button>
+                    <LeaveButton onClick={() => leaveGroup(params.slug)} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-accent hover:ring-offset-2 ring-offset-0 hover:bg-accent/[.5]">
+                    </LeaveButton>
                 </div>
             </div>}
         </div>

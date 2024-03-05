@@ -49,7 +49,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 <div className="pt-96 text-success text-center space-y-3 flex flex-col">
                     <p>Group Created!</p>
                     <p>Share this link with your friends so they can join:</p>
-                    <button onClick={copy} className="text-primary border border-primary rounded-lg p-2 hover:bg-primary hover:text-white">https://localhost:3000/addgroup/join/{params.slug[0]}</button>
+                    <button onClick={copy} className="text-primary border border-primary rounded-lg p-2 hover:bg-primary hover:text-white">https://kaaa-plum.vercel.app/addgroup/join/{params.slug[0]}</button>
                     <p className="text-warning">{copyText}</p>
                     <Link href="/dashboard" className="btn btn-primary hover:ring ring-primary ring-offset-2 rounded-md px-4 py-2 mb-2 text-center">
                         Continue to Dashboard
