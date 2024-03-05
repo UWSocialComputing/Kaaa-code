@@ -17,7 +17,7 @@ export default function Countdown(props: { timeLeft: number, className: string, 
         const days = Math.floor((seconds % 365) / 86400);
         const hours = Math.floor((seconds % 86400) / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
-        return `${days}:${hours}:${minutes}:${seconds % 60}`;
+        return `${days}:${hours}:${minutes}:${(seconds % 60).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}`;
     }
 
     return (

@@ -30,19 +30,18 @@ export default function Group({ params }: { params: { slug: string } }) {
     async function setTimestamp() {
         let data = await queryGroupData(params.slug);
         if (data) {
+            if (data.timeLeft < 0) {
+                setIsLoading(true);
+                updatePrompt(params.slug).then(data => {
+                    setTimeLeft(data!.timeLeft);
+                    setCurrentPrompt(data!.prompt);
+                    setIsLoading(false);
+                });
+            }
             setTimeLeft(data.timeLeft);
             setGroupName(data.groupName);
             setCurrentPrompt(data.prompt);
         }
-    }
-
-    if (timeLeft < 0 && !isLoading) {
-        setIsLoading(true);
-        updatePrompt(params.slug).then(data => {
-            setTimeLeft(data!.timeLeft);
-            setCurrentPrompt(data!.prompt);
-            setIsLoading(false);
-        });
     }
 
     const copy = (e: any) => {
