@@ -16,22 +16,21 @@ Kaaa allows you to connect with friends through our web application. As of the f
 To run Kaaa you must have the latest version of Node.js and npm installed. You must run `npm install` the first time you execute the code or whenever changes are made. To officially run the code, execute `npm run dev`.
 
 ### Git Hub Page
-
+To use the web application version of our code simply go to the following link: https://kaaa-plum.vercel.app/dashboard
 
 ### Features and Usability
-- To add an executable: click the `Add Game` button, and a pop-up window will open
-  - The `name` field will allow you to type in any name you want displayed, and is required
-  - The `path` field is the path to the executable for the app, and is required
-  - The `image path` field is the path to the display image, and is optional
-- To launch an executable, click the `Play` button for the desired executable
-- To reorder the list click the `Edit Order` button, and you will enter editing mode
-  - Click and drag executables to reorder the list
-  - Click `Save Order` button to save the order and exit editing mode
-- To delete and executable, click the `Delete` button next to the desired executable
-\
-\
+- Created user accounts, allowing log-in and log-out capabilities.
+- Created a centralized dashboard for easy and efficient access to the app's key features.
+- Allow for the creation of groups among members.
+- Created a whiteboard that allows users to draw generated prompts.
+- Provided a mosaic view for drawing from group members for the most recently completed prompt.
+- Provided a gallery view for a history of completed prompts for a particular group.
+
 ### Reporting Bugs
 To report a bug or issue, navigate to the `Issues` tab of this repo, and click `New Issue`. Please be as descriptive as possible when reporting bugs. If applicable, please provide an image that shows the issue in your bug description.
 
 ### Known Bugs
 To see a list of known bugs, navigate to the `Issues` tab, which has an up-to-date list of all reported bugs in the app.
+
+### More Information
+If you'd like to read more on the development process of the application you can checkout our project webpage here: https://uwsocialcomputing.github.io/Kaaa/ 
