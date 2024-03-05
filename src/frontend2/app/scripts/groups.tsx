@@ -5,6 +5,7 @@ import { Prompts } from "./prompts";
 import { timeStamp } from "console";
 
 const supabase = createClient();
+const svgParser = new DOMParser();
 
 /**
  * Get all groups belonging to a user
@@ -137,9 +138,35 @@ export async function leaveGroup(groupId: string) {
     redirect('/dashboard');
 }
 
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+export async function updateMosaic(groupId: string, timestamp: Date) {
+    const { data, error } = await supabase
+        .from('usersgroups')
+        .select('active_drawing_svg')
+        .eq('group_id', parseInt(groupId));
+    const svgs = data;
+    
+    if (error) {
+        console.log(error);
+    } else if (svgs) {
+        const strs: string[] = [];
+        svgs.forEach(datum => {
+            strs.push('<svg>' + datum.toString() + '</svg>');
+        })
+        const svgString = strs.join("");
+
+        const { data, error } = await supabase
+            .from('group')
+            .select('mosaic')
+            .eq('id', groupId);
+        const jsonData = JSON.parse(data![0].toString());
+        jsonData[timestamp.getTime()] = svgString;
+        
+        await supabase
+            .from('groups')
+            .update({ mosaic: jsonData })
+            .eq('id', groupId);
+    }
+}
 
 /**
  * Updates the prompt for the group.
@@ -151,6 +178,9 @@ export async function updatePrompt(groupId: string) {
     const numPrompts = Object.keys(Prompts).length;
     const nextPrompt = Math.floor(Math.random() * numPrompts);
     const timestamp = new Date();
+
+    // Need to update mosaic too
+    updateMosaic(groupId, timestamp);
 
     const { data, error } = await supabase
         .from('groups')
