@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { SubmitButton } from "../login/submit-button";
 
 /**
- * Signup tab
+ * Signup tab, allows the user to sign up for an account
  * @param message contains message to be displayed below sign-up button
  */
 export default function Signup({

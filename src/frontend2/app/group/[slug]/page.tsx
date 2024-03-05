@@ -111,7 +111,7 @@ export default async function Group({ params }: { params: { slug: string } }) {
                     </div>
                 </div>
                 <div className="w-1/6 pt-9 justify-between justify-items-center space-y-4">
-                    <button onClick={copy} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-secondary hover:ring-offset-2 ring-offset-0 hover:bg-secondary/[.5]">
+                    <button onClick={copy} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-secondary hover:ring-offset-2 ring-offset-0 hover:bg-secondary/[.5] tooltip" data-tip="copy invite link">
                         {groupName} 🔗
                     </button>
                     {

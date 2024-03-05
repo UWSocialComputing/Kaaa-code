@@ -8,7 +8,7 @@ import Link from "next/link";
 
 
 /**
- * Webapp home page
+ * Page that gets the latest images and creates the mosaic
  */
 export default function Mosaic({ params }: { params: { slug: string } }) {
   // Query backend for user data
@@ -18,9 +18,12 @@ export default function Mosaic({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     let temp = async () => {
+      // check the authentication
       await checkAuth();
+      // get the mosaic data
       let data = await getMosaic(params.slug);
 
+      // set the state to the retrieved data
       if (data != null && [...Object.keys(data)].length > 0) {
         setPrompt(data.prompt);
         setSvg(data.svg);
@@ -65,7 +68,8 @@ export default function Mosaic({ params }: { params: { slug: string } }) {
           <div>
             <p className="text-xl">Prompt: {prompt}</p>
           </div>
-          <div className="flex flex-wrap" dangerouslySetInnerHTML={{ __html: svg }}>
+          { /* sets the svg code to be inside the div */}
+          <div className="flex flex-wrap w-screen" dangerouslySetInnerHTML={{ __html: svg }}>
           </div>
         </div>
 

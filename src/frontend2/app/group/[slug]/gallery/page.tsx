@@ -9,7 +9,8 @@ import Link from "next/link";
 
 
 /**
- * Webapp home page
+ * Page that gets all the prompts and associated images
+ * and displays an ordered gallery
  */
 export default function Gallery({ params }: { params: { slug: string } }) {
   // Query backend for user data
@@ -19,9 +20,12 @@ export default function Gallery({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     let temp = async () => {
+      // check to make sure the user is authenticated
       await checkAuth();
+      // fetches the mosaics
       let data = await getAllMosaics(params.slug);
 
+      // set the state
       if ([...Object.keys(data)].length > 0) {
         setTimestamps([...Object.keys(data)].sort().reverse());
         setMosaics(data);
@@ -32,6 +36,7 @@ export default function Gallery({ params }: { params: { slug: string } }) {
   }, []);
 
   function parseDate(timestamp: string) {
+    // get the timestamp and convert it to a date
     let date = new Date(parseInt(timestamp));
     return date.toLocaleDateString() + " - " + date.toLocaleTimeString();
   }
@@ -69,7 +74,9 @@ export default function Gallery({ params }: { params: { slug: string } }) {
             <></>
           }
           {timestamps.map((timestamp) => {
+            // maps all the timestamps to how it should be formatted
             if (mosaics[timestamp].svg.replaceAll('<svg class="h-full w-full">', "").replaceAll("</svg>", "") === "") {
+              // ignore any empty svg
               return (<></>);
             }
             return (

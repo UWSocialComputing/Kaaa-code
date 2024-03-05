@@ -7,7 +7,8 @@ import { redirect } from "next/navigation";
 import React from 'react';
 
 /**
- * Webapp home page
+ * The dashboard page, contains all the groups the users are a part of
+ * with links to go to each group page
  */
 export default async function Dashboard() {
   // Query backend for user data

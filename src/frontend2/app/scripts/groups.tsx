@@ -247,7 +247,11 @@ export async function updatePrompt(groupId: string, currentPrompt: string) {
     return { timeLeft: 300000 - ((new Date()).getTime() - parseInt(data[0].last_prompt_updated)), prompt: data[0].prompt };
 }
 
-
+/**
+ * Gets the current mosaic for the given group id
+ * @param groupId The group to fetch the mosaic for
+ * @returns the latest prompt and all asscoiated SVG's for the group
+ */
 export async function getMosaic(groupId: string) {
     const { data } = await supabase
         .from('groups')
@@ -259,6 +263,12 @@ export async function getMosaic(groupId: string) {
     return (data[0].mosaic[latest]);
 }
 
+/**
+ * Gets all the mosaics for the given group id as
+ * a dictionary mapping timestamps to prompt and SVG
+ * @param groupId The group to fetch the mosaics for
+ * @returns A dictionary of timestamps to prompt and SVG
+ */
 export async function getAllMosaics(groupId: string) {
     const { data } = await supabase
         .from('groups')

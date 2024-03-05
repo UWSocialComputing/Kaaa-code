@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Loading screen
+ * Loading screen, displayed automatically whenever fetching data
  */
 export default async function Loading() {
 

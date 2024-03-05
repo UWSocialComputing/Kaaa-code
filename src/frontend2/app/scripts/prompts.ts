@@ -2,6 +2,7 @@ interface PromptObject {
     [key: number]: string;
 }
 
+// All the current supported prompts
 export const Prompts: PromptObject = {
     1: "Draw your dream vacation",
     2: "Depict your spirit animal",
