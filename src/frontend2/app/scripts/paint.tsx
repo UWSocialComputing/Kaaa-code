@@ -21,7 +21,7 @@ export async function getUserLiveData(user: string, group: number) {
         console.log(error);
     }
 
-    return data[0];
+    return data![0];
 }
 
 /**
