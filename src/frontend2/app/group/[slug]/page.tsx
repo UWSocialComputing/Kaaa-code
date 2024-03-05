@@ -14,8 +14,9 @@ import { checkAuth } from "@/app/auth/auth";
  * @param param0 the ID of the group the user has selected
  * @returns the group page
  */
-export default function Group({ params }: { params: { slug: string } }) {
+export default async function Group({ params }: { params: { slug: string } }) {
     // Query backend for timestamp
+    const x = "";
     const [groupName, setGroupName] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [currentPrompt, setCurrentPrompt] = useState<string>("");
@@ -25,21 +26,22 @@ export default function Group({ params }: { params: { slug: string } }) {
 
     useEffect(() => {
         // Check authorization
+        console.log("Checking auth")
         checkAuth();
         setIsLoading(true);
         // While loading, do logic to update prompt if necessary
         setTimestamp();
         setIsLoading(false);
-    }, []);
+    }, [x]);
 
-    async function setTimestamp() {
+    let setTimestamp = async function() {
         // get all group data
         let data = await queryGroupData(params.slug);
         if (data) {
             console.log(data);
             if (data.timeLeft <= 0) {
                 // There is no time left, so update the prompt and time left
-                let returned = await updatePrompt(params.slug);
+                let returned = await updatePrompt(params.slug, data.prompt);
                 if (returned) {
                     setTimeLeft(returned.timeLeft);
                     setCurrentPrompt(returned.prompt);
@@ -117,10 +119,10 @@ export default function Group({ params }: { params: { slug: string } }) {
                     <Link href="/" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Whiteboard
                     </Link>
-                    <Link href="/group/mosaic" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
+                    <Link href={`/group/${params.slug}/mosaic`} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Mosaic
                     </Link>
-                    <Link href="/group/gallery" className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
+                    <Link href={`/group/${params.slug}/gallery`} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Gallery
                     </Link>
                     <button onClick={() => leaveGroup(params.slug)} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-accent hover:ring-offset-2 ring-offset-0 hover:bg-accent/[.5]">

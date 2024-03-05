@@ -4,6 +4,7 @@ import { ExcalidrawImperativeAPI, ImportedDataState, ExcalidrawElement } from "@
 import { getUserLiveData, uploadLive, uploadFinal } from "@/app/scripts/paint";
 import { useEffect, useState } from "react";
 import { checkAuth } from "@/app/auth/auth";
+import { updateMosaic } from "@/app/scripts/groups";
 const Excalidraw = dynamic(
     async () => (await import("@excalidraw/excalidraw")).Excalidraw,
     {
@@ -16,7 +17,7 @@ const Excalidraw = dynamic(
  * @param param0 group ID of the selected group
  * @returns the actual whiteboard feature
  */
-export default function Paint({ group }: { group: number }) {
+export default function Paint({ group }: { group: number}) {
 
 
     const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI>(null);
@@ -44,7 +45,6 @@ export default function Paint({ group }: { group: number }) {
             }
             if (d.active_drawing_svg != null) {
                 setSvg(d.active_drawing_svg);
-                //console.log(d.active_drawing_svg)
             }
             setLoading(false);
         }

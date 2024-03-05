@@ -142,14 +142,59 @@ function delay(ms: number) {
 }
 
 /**
+ * Updates the group's mosaic
+ * @param groupId the id of the group whose mosaic is being updated
+ * @param timestamp the time that the last prompt was given
+ */
+export async function updateMosaic(groupId: string, timestamp: Date, currentPrompt: string) {
+    const { data, error } = await supabase
+        .from('usersgroups')
+        .select('active_drawing_svg')
+        .eq('group_id', parseInt(groupId));
+    const svgs = data;
+
+    if (error) {
+        console.log(error);
+    } else if (svgs) {
+        const strs: string[] = [];
+        svgs.forEach(datum => {
+            strs.push('<svg>' + datum.active_drawing_svg.toString() + '</svg>');
+        })
+        const svgString = strs.join("");
+        const storageObject = { prompt: currentPrompt, svg: svgString };
+
+        const { data, error } = await supabase
+            .from('groups')
+            .select('mosaic')
+            .eq('id', parseInt(groupId));
+        console.log('mosaic' + data![0].mosaic.toString());
+        const jsonData = data ? data[0].mosaic : {};
+        jsonData[timestamp.getTime()] = storageObject;
+
+        if (error) {
+            console.log(error);
+        }
+
+        await supabase
+            .from('groups')
+            .update({ mosaic: jsonData })
+            .eq('id', groupId);
+    }
+}
+
+/**
  * Updates the prompt for the group.
  * Supabase doesn't offer transactions so this doesn't deal with race conditions.
  * @param groupId the id of the group whose prompt is to be updates
  * @returns The new time left, the new prompt
  */
-export async function updatePrompt(groupId: string) {
+export async function updatePrompt(groupId: string, currentPrompt: string) {
+    console.log("updatePrompt")
     const numPrompts = Object.keys(Prompts).length;
-    const nextPrompt = Math.floor(Math.random() * numPrompts);
+    let nextPrompt = Math.floor(Math.random() * numPrompts);
+    while (Prompts[nextPrompt] === currentPrompt) {
+        nextPrompt = Math.floor(Math.random() * numPrompts)
+    }
     const timestamp = new Date();
 
     const {
@@ -159,6 +204,8 @@ export async function updatePrompt(groupId: string) {
     if (!user) {
         return false
     }
+    // Need to update mosaic too
+    await updateMosaic(groupId, timestamp, currentPrompt);
 
     const { data, error } = await supabase
         .from('groups')
@@ -167,7 +214,7 @@ export async function updatePrompt(groupId: string) {
         .select('last_prompt_updated, prompt');
 
 
-    const {  } = await supabase
+    const { } = await supabase
         .from('usersgroups')
         .update({ active_drawing_json: {}, active_drawing_svg: "" })
         .eq('user', user.email)
@@ -180,4 +227,26 @@ export async function updatePrompt(groupId: string) {
     }
 
     return { timeLeft: 300000 - ((new Date()).getTime() - (new Date(data[0].last_prompt_updated + 'Z')).getTime()), prompt: data[0].prompt };
+}
+
+
+export async function getMosaic(groupId: string) {
+    const { data } = await supabase
+        .from('groups')
+        .select('mosaic')
+        .filter('id', 'eq', parseInt(groupId));
+
+    // get the latest timestamp
+    const latest = Math.max(...Object.keys(data[0].mosaic));
+    return (data[0].mosaic[latest]);
+}
+
+export async function getAllMosaics(groupId: string) {
+    const { data } = await supabase
+        .from('groups')
+        .select('mosaic')
+        .filter('id', 'eq', parseInt(groupId));
+
+    // get the latest timestamp
+    return (data[0].mosaic);
 }
