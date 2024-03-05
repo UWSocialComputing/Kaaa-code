@@ -13,7 +13,7 @@ import { shouldAllowVerticalAlign } from "@excalidraw/excalidraw/types/element/t
  * @param param0 the ID of the group the user has selected
  * @returns the group page
  */
-export default function Group({ params }: { params: { slug: string } }) {
+export default async function Group({ params }: { params: { slug: string } }) {
     // Query backend for timestamp
     const [groupName, setGroupName] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState<number>(0);

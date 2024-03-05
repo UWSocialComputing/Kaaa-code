@@ -5,7 +5,6 @@ import { Prompts } from "./prompts";
 import { timeStamp } from "console";
 
 const supabase = createClient();
-const svgParser = new DOMParser();
 
 /**
  * Get all groups belonging to a user
@@ -155,17 +154,22 @@ export async function updateMosaic(groupId: string, timestamp: Date, currentProm
     } else if (svgs) {
         const strs: string[] = [];
         svgs.forEach(datum => {
-            strs.push('<svg>' + datum.toString() + '</svg>');
+            strs.push('<svg>' + datum.active_drawing_svg.toString() + '</svg>');
         })
         const svgString = strs.join("");
         const storageObject = { prompt: currentPrompt, svg: svgString };
 
         const { data, error } = await supabase
-            .from('group')
+            .from('groups')
             .select('mosaic')
-            .eq('id', groupId);
-        const jsonData = JSON.parse(data![0].toString());
+            .eq('id', parseInt(groupId));
+        console.log('mosaic' + data![0].mosaic.toString());
+        const jsonData = data ? data[0].mosaic : {};
         jsonData[timestamp.getTime()] = storageObject;
+
+        if (error) {
+            console.log(error);
+        }
         
         await supabase
             .from('groups')
