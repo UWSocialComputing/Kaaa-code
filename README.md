@@ -4,6 +4,7 @@ We all have people that used to be in our lives, but no longer are. This can be 
 
 As a solution to this issue, we came up with an app that allows people to keep in touch by playing a simple game together. This game requires very little time commitment, no money commitment, and allows people to come back time and time again for new experiences that they can share with old friends. We call it Kaaa. Kaaa is a web app that allows friends to create groups and draw in response to prompts. Once the prompt’s timer runs out, you’ll get to see everyone’s finished drawings collected into one big mosaic!
 
+Use it here: https://kaaa-plum.vercel.app/
 
 ## User Guide
 Kaaa allows you to connect with friends through our web application. As of the final release, users can make groups, draw given prompts, view others' drawings for the prompts (mosaic), see previous prompt drawings (gallery), and much more. Users can increase connectivity with those they care about driving healthier and stronger relationships.
@@ -47,7 +48,7 @@ Make sure to add all the tables as per the schema in the "backend" folder. You c
 
    The app should now be running on [localhost:3000](http://localhost:3000/).
 
-### GitHub Page
+### Live Page
 To use the web application version of our code simply go to the following link: https://kaaa-plum.vercel.app/
 
 ### Features and Usability
