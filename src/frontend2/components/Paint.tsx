@@ -37,14 +37,14 @@ export default function Paint({ group }: { group: number }) {
                 return;
             }
             let d = await getUserLiveData(user, group);
-            if (d.active_drawing_json != null) {
+            if (d != null && d.active_drawing_json != null) {
                 if (excalidrawAPI != null) {
                     excalidrawAPI.updateScene({ elements: d.active_drawing_json.elements });
                 } else {
                     setInitialData({ elements: d.active_drawing_json.elements, appState: {}, scrollToContent: true });
                 }
             }
-            if (d.active_drawing_svg != null) {
+            if (d != null && d.active_drawing_svg != null) {
                 setSvg(d.active_drawing_svg);
             }
             setLoading(false);

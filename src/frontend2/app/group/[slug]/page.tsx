@@ -22,15 +22,26 @@ export default async function Group({ params }: { params: { slug: string } }) {
     const [currentPrompt, setCurrentPrompt] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [timer, setTimer] = useState<any>(<></>);
+    const [user, setUser] = useState<string>("");
 
 
     useEffect(() => {
         // Check authorization
         console.log("Checking auth")
-        checkAuth();
+
+        let temp = async function () {
+            let currUser = await checkAuth();
+            if (currUser) {
+                setUser(currUser);
+            } else {
+                alert("could not authenticate!");
+            }
+             // While loading, do logic to update prompt if necessary
+            await setTimestamp();
+        }
+
         setIsLoading(true);
-        // While loading, do logic to update prompt if necessary
-        setTimestamp();
+        temp();
         setIsLoading(false);
     }, [x]);
 
@@ -41,7 +52,7 @@ export default async function Group({ params }: { params: { slug: string } }) {
             console.log(data);
             if (data.timeLeft <= 0) {
                 // There is no time left, so update the prompt and time left
-                let returned = await updatePrompt(params.slug, data.prompt);
+                let returned = await updatePrompt(user, params.slug, data.prompt);
                 if (returned) {
                     setCurrentPrompt(returned.prompt);
                     // Setting the timer into state, forcing re-render with new timer
@@ -126,7 +137,7 @@ export default async function Group({ params }: { params: { slug: string } }) {
                     <Link href={`/group/${params.slug}/gallery`} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-primary hover:ring-offset-2 ring-offset-0 hover:bg-primary/[.5]">
                         Gallery
                     </Link>
-                    <LeaveButton onClick={() => leaveGroup(params.slug)} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-accent hover:ring-offset-2 ring-offset-0 hover:bg-accent/[.5]">
+                    <LeaveButton onClick={() => leaveGroup(user, params.slug)} className="grid place-items-center rounded-box h-20 text-2xl w-5/6 ring ring-accent hover:ring-offset-2 ring-offset-0 hover:bg-accent/[.5]">
                     </LeaveButton>
                 </div>
             </div>}

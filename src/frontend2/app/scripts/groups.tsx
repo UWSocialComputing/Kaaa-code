@@ -31,15 +31,11 @@ async function getUserGroups(user: string | undefined) {
  * @param groupId the group to add the logged in user to
  * @returns true if succesful, false otherwise
  */
-export async function updateUserWithNewGroup(groupId: number) {
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+export async function updateUserWithNewGroup(user: string, groupId: number) {
 
     const { data, error } = await supabase
         .from('usersgroups')
-        .insert({ user: user?.email, group_id: groupId, active_drawing_json: {}, active_drawing_svg: "" });
+        .insert({ user: user, group_id: groupId, active_drawing_json: {}, active_drawing_svg: "" });
 
     if (error) {
         console.log(error);
@@ -56,24 +52,16 @@ export async function updateUserWithNewGroup(groupId: number) {
  * @param name the name that the group will have
  * @returns true if succesful, false otherwise
  */
-export async function createGroup(name: string) {
+export async function createGroup(user: string, name: string) {
 
     let timestamp = (new Date()).getTime()
     let numPrompts = Object.keys(Prompts).length
     let currPrompt = Prompts[Math.floor(Math.random() * numPrompts)]
     let mosaic = {}
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-        return false
-    }
-
     const { data, error } = await supabase
         .from('groups')
-        .insert({ name: name, prompt: currPrompt, mosaic, last_prompt_updated: timestamp, owner: user.email })
+        .insert({ name: name, prompt: currPrompt, mosaic, last_prompt_updated: timestamp, owner: user })
         .select();
 
     if (error) {
@@ -81,7 +69,7 @@ export async function createGroup(name: string) {
         return false
     }
     console.log('here')
-    updateUserWithNewGroup(data[0].id)
+    updateUserWithNewGroup(user, data[0].id)
     redirect("/addGroup/show/" + data[0].id);
     return true;
 }
@@ -109,15 +97,11 @@ export async function queryGroupData(groupId: string) {
  * If there are no more users in the group, deletes the group.
  * @param groupId the Id of the group to be left
  */
-export async function leaveGroup(groupId: string) {
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
+export async function leaveGroup(user: string, groupId: string) {
     await supabase
         .from('usersgroups')
         .delete()
-        .eq('user', user?.email)
+        .eq('user', user)
         .eq('group_id', groupId);
 
     const { count } = await supabase
@@ -192,7 +176,7 @@ export async function updateMosaic(groupId: string, timestamp: number, currentPr
  * @param groupId the id of the group whose prompt is to be updates
  * @returns The new time left, the new prompt
  */
-export async function updatePrompt(groupId: string, currentPrompt: string) {
+export async function updatePrompt(user: string, groupId: string, currentPrompt: string) {
     console.log("updatePrompt")
     const numPrompts = Object.keys(Prompts).length;
     let nextPrompt = Math.floor(Math.random() * numPrompts);
@@ -200,14 +184,6 @@ export async function updatePrompt(groupId: string, currentPrompt: string) {
         nextPrompt = Math.floor(Math.random() * numPrompts)
     }
     const timestamp = (new Date()).getTime();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-        return false
-    }
 
     const { data, error } = await supabase
         .from('groups')

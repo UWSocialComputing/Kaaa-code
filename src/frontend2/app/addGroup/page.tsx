@@ -1,15 +1,34 @@
 "use client"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import { SubmitButton } from "../login/submit-button";
 import { createGroup } from "../scripts/groups";
+import { checkAuth } from "../auth/auth";
 
 /**
  * Add group screen
  */
-export default async function Dashboard() {
+export default function Dashboard() {
+
+    const [user, setUser] = useState<string>("");
+
+    useEffect(() => {
+        // check to make sure the user is authenticated
+
+        let temp = async function () {
+            let user = await checkAuth();
+            if (!user) {
+                alert("error unable to authenticate user")
+            } else {
+                setUser(user);
+            }
+        }
+
+        temp();
+    }, [user]);
+
     return (
         <>
             <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
@@ -44,7 +63,7 @@ export default async function Dashboard() {
                     <SubmitButton
                         formAction={(formData) => {
                             const groupName = formData.get("groupName") as string;
-                            createGroup(groupName).then();
+                            createGroup(user, groupName).then();
                         }}
                         className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2 btn btn-primary"
                         pendingText="Adding Group..."

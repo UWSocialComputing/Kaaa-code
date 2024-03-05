@@ -18,19 +18,24 @@ export default function Page({ params }: { params: { slug: string } }) {
     useEffect(() => {
         let temp = async function () {
             // check to make sure user is logged in, otherwise redirect
-            await checkAuth();
+            let user = await checkAuth();
             // join the group
-            await joinGroup();
+            if (user) {
+                await joinGroup(user);
+            } else {
+                setFailed(true);
+            }
         }
 
         // call temporary function to force await on the async
         temp();
     }, []);
 
-    let joinGroup = async function () {
+    let joinGroup = async function (user: string) {
         if (joining) {
             // make call to server with the group ID passed in URL
-            let res = await updateUserWithNewGroup(parseInt(params.slug[0]));
+            let res = await updateUserWithNewGroup(user, parseInt(params.slug[0]));
+            console.log(res);
             if (res != 0 && res != DUPLICATE_KEY_ERR) {
                 // If failed and it is not a duplicate key error, set failed to true
                 setFailed(true);
