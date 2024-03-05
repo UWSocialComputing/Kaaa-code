@@ -45,7 +45,11 @@ export default async function Dashboard() {
       <div className="grid grid-cols-5 grid-rows-4 gap-y-6 gap-4 mt-10">
         {groups != null && groups!.length == 0 ? <p className="col-span-5 text-center">Uh oh! Looks like you have no groups with your friends <a href="/addGroup" className="btn text-neutral btn-link">Add one?</a></p> : Array.from({ length: groups!.length }, (_, index) => (
           <>
-            <a key={groups![index].group_id} href={"./group/" + groups![index].group_id} className="text-xl pt-3.5 w-36 text-xs rounded-lg ring hover:ring-offset-2 ring-primary ring-offset-0 hover:bg-primary/[.5] p-2 lg:text-xl text-center h-14">{groups![index].name.name}</a>
+            <a key={groups![index].group_id} href={"./group/" + groups![index].group_id} className="text-xl pt-3.5 w-36 text-xs rounded-lg ring hover:ring-offset-2 ring-primary ring-offset-0 hover:bg-primary/[.5] p-2 lg:text-xl text-center h-14 tooltip" data-tip={groups![index].name.name}>
+              <p className="truncate">
+                {groups![index].name.name}
+              </p>
+            </a>
           </>
         ))}
       </div>

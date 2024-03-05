@@ -159,7 +159,7 @@ export async function updateMosaic(groupId: string, timestamp: Date, currentProm
     } else if (svgs) {
         const strs: string[] = [];
         svgs.forEach(datum => {
-            strs.push('<svg class="h-full w-full">' + datum.active_drawing_svg.toString() + '</svg>');
+            strs.push('<svg viewBox="0 0 60 55" preserveAspectRatio="xMidYMin slice"style="width: 100%; padding-bottom: 23%; height: 1px; overflow: visible">' + datum.active_drawing_svg.toString() + '</svg>');
         })
         const svgString = strs.join("");
         const storageObject = { prompt: currentPrompt, svg: svgString };
