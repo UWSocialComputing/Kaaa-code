@@ -10,6 +10,7 @@ const supabase = createClient();
  * @returns the user's data for the group
  */
 export async function getUserLiveData(user: string, group: number) {
+    console.log("group:" + group)
     const { data, error } = await supabase
         .from('usersgroups')
         .select()

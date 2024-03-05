@@ -16,13 +16,15 @@ const Excalidraw = dynamic(
  * @param param0 group ID of the selected group
  * @returns the actual whiteboard feature
  */
-export default async function Paint({ group }: { group: number }) {
+export default function Paint({ group }: { group: number }) {
 
 
     const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI>(null);
     const [svg, setSvg] = useState<SVGSVGElement | null>(null);
     const [loading, setLoading] = useState(true);
     const [initialData, setInitialData] = useState<ImportedDataState>({ elements: [], appState: {}, scrollToContent: true });
+    const [save, setSave] = useState("Save");
+    const [upload, setUploaded] = useState("Done drawing!");
 
     let user: string | undefined = "";
 
@@ -53,14 +55,18 @@ export default async function Paint({ group }: { group: number }) {
     });
 
     let saveLiveToCloud = async () => {
+        setSave("Saving...");
         let elements = await excalidrawAPI.getSceneElements();
         user = await checkAuth();
         if (user && user!="") {
             await uploadLive(user, group, elements);
         }
+        setSave("Saved!");
+        setTimeout(() => {setSave("Save")}, 1500);
     }
 
     let saveFinishedToCloud = async () => {
+        setUploaded("Uploading...");
         saveLiveToCloud();
         let elements = await excalidrawAPI.getSceneElements();
         const svg = await exportToSvg({
@@ -72,6 +78,8 @@ export default async function Paint({ group }: { group: number }) {
             setSvg(svg);
             await uploadFinal(user, group, svg.innerHTML);
         }
+        setUploaded("Uploaded!");
+        setTimeout(() => {setUploaded("Done drawing!")}, 1500);
     }
 
 
@@ -89,15 +97,15 @@ export default async function Paint({ group }: { group: number }) {
                         <button
                             onClick={saveLiveToCloud}
                             className="btn btn-secondary">
-                            Save
+                            {save}
                         </button>
                         <button
                             onClick={saveFinishedToCloud}
                             className="btn btn-primary">
-                            Done drawing!
+                            {upload}
                         </button>
                     </div>
-                    <div style={{ height: "550px" }} className="custom-styles">
+                    <div style={{ height: "450px" }} className="custom-styles">
                         <Excalidraw
                             onChange={(elements, state) => {
 
@@ -116,14 +124,6 @@ export default async function Paint({ group }: { group: number }) {
                                 </WelcomeScreen.Hints.ToolbarHint>
                             </WelcomeScreen>
                         </Excalidraw>
-                        <div className="">
-                            {
-                                svg != null ?
-                                    <svg dangerouslySetInnerHTML={{ __html: svg }} />
-                                    :
-                                    <></>
-                            }
-                        </div>
                     </div>
                 </>
             }
