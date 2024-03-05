@@ -26,7 +26,7 @@ To use the web application version of our code simply go to the following link: 
 - Provided a mosaic view for drawing from group members for the most recently completed prompt.
 - Provided a gallery view for a history of completed prompts for a particular group.
 \
-\
+
 ### Reporting Bugs
 To report a bug or issue, navigate to the `Issues` tab of this repo, and click `New Issue`. Please be as descriptive as possible when reporting bugs. If applicable, please provide an image that shows the issue in your bug description.
 
