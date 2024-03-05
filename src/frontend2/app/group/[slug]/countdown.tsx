@@ -10,7 +10,7 @@ export default function Countdown(props: { timeLeft: number, className: string, 
 
     useEffect(() => {
         seconds > 0 && setTimeout(() => setSeconds(seconds - 1), 1000);
-        seconds == 0 && props.onTimeout();
+        seconds == 0;
     }, [seconds]);
 
     const formatTime = () => {

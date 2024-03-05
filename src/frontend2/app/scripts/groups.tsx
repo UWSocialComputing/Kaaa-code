@@ -158,7 +158,7 @@ export async function updateMosaic(groupId: string, timestamp: Date, currentProm
     } else if (svgs) {
         const strs: string[] = [];
         svgs.forEach(datum => {
-            strs.push('<svg>' + datum.active_drawing_svg.toString() + '</svg>');
+            strs.push('<svg class="h-full w-full">' + datum.active_drawing_svg.toString() + '</svg>');
         })
         const svgString = strs.join("");
         const storageObject = { prompt: currentPrompt, svg: svgString };
@@ -179,6 +179,11 @@ export async function updateMosaic(groupId: string, timestamp: Date, currentProm
             .from('groups')
             .update({ mosaic: jsonData })
             .eq('id', groupId);
+        
+        await supabase
+            .from('usersgroups')
+            .update({ active_drawing_json: {}, active_drawing_svg: "" })
+            .eq('group_id', parseInt(groupId));
     }
 }
 
