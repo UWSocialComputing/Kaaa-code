@@ -18,7 +18,7 @@ const Excalidraw = dynamic(
  * @param param0 group ID of the selected group
  * @returns the actual whiteboard feature
  */
-export default function Paint({ group }: { group: number}) {
+export default function Paint({ group }: { group: number }) {
 
 
     const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI>(null);
@@ -59,11 +59,11 @@ export default function Paint({ group }: { group: number}) {
         setSave("Saving...");
         let elements = await excalidrawAPI.getSceneElements();
         user = await checkAuth();
-        if (user && user!="") {
+        if (user && user != "") {
             await uploadLive(user, group, elements);
         }
         setSave("Saved!");
-        setTimeout(() => {setSave("Save")}, 1500);
+        setTimeout(() => { setSave("Save") }, 1500);
     }
 
     let saveFinishedToCloud = async () => {
@@ -75,12 +75,12 @@ export default function Paint({ group }: { group: number}) {
             appState: {},
         });
         user = await checkAuth();
-        if (user && user!="") {
+        if (user && user != "") {
             setSvg(svg);
             await uploadFinal(user, group, svg.innerHTML);
         }
         setUploaded("Uploaded!");
-        setTimeout(() => {setUploaded("Done drawing!")}, 1500);
+        setTimeout(() => { setUploaded("Done drawing!") }, 1500);
     }
 
 
@@ -105,6 +105,12 @@ export default function Paint({ group }: { group: number}) {
                             className="btn btn-primary">
                             {upload}
                         </button>
+                        {
+                            svg != null ?
+                                <p className="text-sm mt-3">After finishing done, your drawings will appear on the mosaic after the timer runs out</p>
+                                :
+                                <></>
+                        }
                     </div>
                     <div style={{ height: "450px" }} className="custom-styles">
                         <Excalidraw

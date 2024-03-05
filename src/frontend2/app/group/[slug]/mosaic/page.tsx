@@ -13,7 +13,7 @@ import Link from "next/link";
 export default function Mosaic({ params }: { params: { slug: string } }) {
   // Query backend for user data
 
-  const [prompt, setPrompt] = useState<string>("");
+  const [prompt, setPrompt] = useState<string>("No prompts yet! Check back after the prompts are done!");
   const [svg, setSvg] = useState<string>("");
 
   useEffect(() => {
@@ -21,10 +21,12 @@ export default function Mosaic({ params }: { params: { slug: string } }) {
       await checkAuth();
       let data = await getMosaic(params.slug);
 
-      setPrompt(data.prompt);
-      setSvg(data.svg);
+      if (data != null && [...Object.keys(data)].length > 0) {
+        setPrompt(data.prompt);
+        setSvg(data.svg);
 
-      console.log(data);
+        console.log(data);
+      }
     }
     temp();
   }, []);

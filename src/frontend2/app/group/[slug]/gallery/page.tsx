@@ -22,8 +22,10 @@ export default function Gallery({ params }: { params: { slug: string } }) {
       await checkAuth();
       let data = await getAllMosaics(params.slug);
 
-      setTimestamps([...Object.keys(data)].sort().reverse());
-      setMosaics(data);
+      if ([...Object.keys(data)].length > 0) {
+        setTimestamps([...Object.keys(data)].sort().reverse());
+        setMosaics(data);
+      }
     }
 
     temp();
@@ -61,8 +63,13 @@ export default function Gallery({ params }: { params: { slug: string } }) {
       <div className="w-full max-w-3xl flex justify-between items-center p-3 text-sm mt-20">
 
         <div className="flex flex-col space-y-10">
+          {timestamps.length == 0 ?
+            <p>No drawings yet! Check back later!</p>
+            :
+            <></>
+          }
           {timestamps.map((timestamp) => {
-            if (mosaics[timestamp].svg.replaceAll('<svg class="h-full w-full">',"").replaceAll("</svg>","") === "") {
+            if (mosaics[timestamp].svg.replaceAll('<svg class="h-full w-full">', "").replaceAll("</svg>", "") === "") {
               return (<></>);
             }
             return (
