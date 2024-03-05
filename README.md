@@ -13,10 +13,42 @@ Kaaa allows you to connect with friends through our web application. As of the f
 - The frontend2 folder takes care of the bulk of the React code that powers the application itself such as onboarding users, adding groups, drawing, viewing the mosaic and gallery, and leaving groups.
 
 ### Running Locally
-To run Kaaa you must have the latest version of Node.js and npm installed. You must run `npm install` the first time you execute the code or whenever changes are made. To officially run the code, execute `npm run dev`.
+To run Kaaa you must have the latest version of Node.js and npm installed.
 
-### Git Hub Page
-To use the web application version of our code simply go to the following link: https://kaaa-plum.vercel.app/dashboard
+1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+
+Supabase is the backend service for our application. It helps us handle everything from user authentication to storing all the information we need within the database.
+
+Make sure to add all the tables as per the schema in the "backend" folder. You can paste each of the create table commands into the SQL editor from the sidebar to create the tables.
+
+2. Go to the frontend2 folder and install all the required dependencies with the following command:
+
+   ```bash
+   cd frontend2
+   npm install
+   ```
+
+3. Create a file called `.env.local` and add the following:
+
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
+   ```
+
+   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api).
+
+   Note: Be sure to create the tables as mentioned in step 1!
+
+4. You can now run the Next.js local development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   The app should now be running on [localhost:3000](http://localhost:3000/).
+
+### GitHub Page
+To use the web application version of our code simply go to the following link: https://kaaa-plum.vercel.app/
 
 ### Features and Usability
 - Created user accounts, allowing log-in and log-out capabilities.
