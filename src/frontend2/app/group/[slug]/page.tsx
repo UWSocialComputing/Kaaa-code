@@ -22,7 +22,6 @@ export default async function Group({ params }: { params: { slug: string } }) {
     const [currentPrompt, setCurrentPrompt] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [timer, setTimer] = useState<any>(<></>);
-    const [isLeaving, setIsLeaving] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -49,7 +48,8 @@ export default async function Group({ params }: { params: { slug: string } }) {
                     // (Using state for timeLeft does not cause re-render for some reason)
                     setTimer(<Countdown
                         className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6"
-                        timeLeft={returned.timeLeft}/>);
+                        timeLeft={returned.timeLeft}
+                        onTimeout={() => {redirect('/group/'+params.slug)}}/>);
                 } else {
                     alert("Error updating prompt");
                 }
@@ -58,7 +58,8 @@ export default async function Group({ params }: { params: { slug: string } }) {
                 setCurrentPrompt(data.prompt);
                 setTimer(<Countdown
                     className="grid h-20 card ring ring-secondary rounded-box place-items-center text-2xl w-5/6"
-                    timeLeft={data.timeLeft}/>)
+                    timeLeft={data.timeLeft}
+                    onTimeout={() => {redirect('/group/'+params.slug)}}/>)
             }
             // set group name
             setGroupName(data.groupName);
