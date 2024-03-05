@@ -107,7 +107,7 @@ export default function Paint({ group }: { group: number }) {
                         </button>
                         {
                             svg != null ?
-                                <p className="text-sm mt-3">After finishing done, your drawings will appear on the mosaic after the timer runs out</p>
+                                <p className="text-sm mt-3">"Save" will save for later. "Done Drawing" will upload your drawing to the cloud. After clicking done, your drawings will appear on the mosaic/gallery after the timer to the right runs out. Draw the prompt below!</p>
                                 :
                                 <></>
                         }
