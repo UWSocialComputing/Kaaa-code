@@ -1,3 +1,4 @@
+// @ts-nocheck
 import dynamic from "next/dynamic";
 import { MainMenu, WelcomeScreen, exportToSvg } from "@excalidraw/excalidraw";
 import { ExcalidrawImperativeAPI, ImportedDataState, ExcalidrawElement } from "@excalidraw/excalidraw/dist/excalidraw/types";

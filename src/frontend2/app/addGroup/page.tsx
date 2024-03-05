@@ -1,3 +1,4 @@
+"use client"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import React from 'react';
@@ -9,26 +10,6 @@ import { createGroup } from "../scripts/groups";
  * Add group screen
  */
 export default async function Dashboard() {
-    // Query backend for user data
-    const supabase = createClient();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    // Redirect to login page if user isn't logged in
-    if (!user) {
-        return redirect("/login");
-    }
-
-    // FOR TESTING PURPOSES ONLY
-    const submit = async (formData : FormData) => {
-        "use server"
-
-        const groupName = formData.get("groupName") as string;
-        let res = await createGroup(groupName);
-    }
-
     return (
         <>
             <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
@@ -61,7 +42,10 @@ export default async function Dashboard() {
                         required
                     />
                     <SubmitButton
-                        formAction={submit}
+                        formAction={(formData) => {
+                            const groupName = formData.get("groupName") as string;
+                            createGroup(groupName).then();
+                        }}
                         className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2 btn btn-primary"
                         pendingText="Adding Group..."
                     >

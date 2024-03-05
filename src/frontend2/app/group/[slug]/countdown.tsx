@@ -5,12 +5,11 @@ import { useState, useEffect } from 'react';
  * @param props the amount of time for the countdown to starts with, in milliseconds
  * @returns the countdown
  */
-export default function Countdown(props: { timeLeft: number, className: string, onTimeout: () => void }) {
+export default function Countdown(props: { timeLeft: number, className: string }) {
     const [seconds, setSeconds] = useState<number>(Math.floor(props.timeLeft / 1000));
 
     useEffect(() => {
         seconds > 0 && setTimeout(() => setSeconds(seconds - 1), 1000);
-        seconds == 0;
     }, [seconds]);
 
     const formatTime = () => {
